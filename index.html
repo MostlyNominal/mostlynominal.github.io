@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MOSTLY NOMINAL — FLIGHT LOG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #141810;   /* deep olive, like the room */
+      --surface: #1c2218;
+      --panel:   #202818;
+      --olive:   #2e3828;
+      --olive2:  #3a4632;
+      --border:  #2a3424;
+      --border2: #3a4832;
+      --amber:   #d89020;   /* warm amber readout */
+      --amber2:  #a06010;
+      --cream:   #c8bfa0;   /* wall/paper color */
+      --cream2:  #8a8068;
+      --crt:     #a0c8d8;   /* small CRT blue-white */
+      --g-line:  #40d870;
+      --y-line:  #d8c840;
+      --r-line:  #d84030;
+      --c-line:  #30c8c0;
+      --mono:    'Courier New', Courier, monospace;
+      --px:      'Press Start 2P', monospace;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: var(--mono);
+      font-size: 14px;
+      min-height: 100vh;
+    }
+
+    .wrap { max-width: 900px; margin: 0 auto; padding: 0 0 80px; }
+
+    /* ══ TOP STRIP ══ */
+    .top-strip {
+      background: var(--olive);
+      border-bottom: 2px solid var(--border2);
+      padding: 0 22px;
+      display: flex;
+      align-items: stretch;
+    }
+
+    .strip-id {
+      font-size: 0.55rem;
+      color: var(--cream2);
+      letter-spacing: 2px;
+      padding: 7px 16px 7px 0;
+      border-right: 1px solid var(--border2);
+      margin-right: 0;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .readouts { display: flex; }
+
+    .r-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 14px;
+      border-right: 1px solid var(--border);
+      gap: 1px;
+    }
+
+    .r-lbl { font-size: 0.34rem; color: var(--cream2); letter-spacing: 2px; opacity: 0.6; }
+    .r-val { font-size: 0.72rem; color: var(--amber); letter-spacing: 1px; }
+    .r-val.g { color: var(--g-line); }
+    .r-val.c { color: var(--cream); }
+
+    .blink { animation: bl 1.1s step-end infinite; }
+    @keyframes bl { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* ══ HEADER ══ */
+    header {
+      padding: 24px 22px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    h1 {
+      font-family: var(--px);
+      font-size: clamp(1rem, 3vw, 1.6rem);
+      color: var(--cream);
+      line-height: 1.5;
+    }
+
+    .h-right { text-align: right; }
+    .h-right .stat { font-size: 0.82rem; color: var(--cream2); }
+    .h-right .sub  { font-size: 0.6rem;  color: var(--cream2); opacity: 0.45; margin-top: 3px; }
+
+    /* ══ NAV ══ */
+    nav {
+      background: var(--olive);
+      border-bottom: 2px solid var(--border2);
+      display: flex;
+      padding: 0 22px;
+    }
+
+    nav a {
+      font-size: 0.72rem;
+      color: var(--cream2);
+      text-decoration: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-right: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: background 0.1s, color 0.1s;
+    }
+
+    nav a .pn { font-size: 0.44rem; color: var(--amber2); opacity: 0.7; }
+    nav a:hover, nav a.active { background: var(--olive2); color: var(--cream); }
+    nav a.active .pn { opacity: 1; color: var(--amber); }
+
+    /* ══ CONTENT ══ */
+    .content { padding: 22px 22px 0; }
+
+    /* ── Intro with small CRT monitor ── */
+    .intro {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 20px;
+      align-items: start;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 18px;
+    }
+
+    .intro-text p {
+      font-size: 0.82rem;
+      line-height: 1.9;
+      color: var(--cream2);
+      margin-bottom: 6px;
+    }
+
+    .intro-text p:last-child { margin-bottom: 0; }
+    .intro-text em { color: var(--cream); font-style: normal; }
+
+    /* ISS tracker monitor */
+    .iss-monitor {
+      background: #060a06;
+      border: 2px solid var(--olive2);
+      border-radius: 3px;
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.6), 0 2px 0 var(--border2);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .iss-monitor canvas {
+      display: block;
+      width: 100%;
+    }
+
+    .iss-readout {
+      background: #040804;
+      border-top: 1px solid var(--border);
+      padding: 4px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .iss-readout .ir {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .iss-readout .ir-lbl {
+      font-size: 0.28rem;
+      color: var(--cream2);
+      opacity: 0.4;
+      letter-spacing: 1px;
+    }
+
+    .iss-readout .ir-val {
+      font-size: 0.55rem;
+      color: #ff8028;
+      letter-spacing: 1px;
+    }
+
+    .iss-readout .iss-label {
+      font-size: 0.3rem;
+      color: var(--cream2);
+      opacity: 0.3;
+      letter-spacing: 2px;
+    }
+
+    /* ── Bench ── */
+    .bench {
+      margin-bottom: 18px;
+      padding: 10px 14px;
+      border: 1px solid var(--border2);
+      border-left: 3px solid var(--amber2);
+      background: var(--panel);
+    }
+
+    .bench-lbl {
+      font-size: 0.44rem;
+      color: var(--amber);
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .bench-lbl::before { content: '▶ '; }
+
+    .bench p {
+      font-size: 0.8rem;
+      line-height: 1.75;
+      color: var(--cream2);
+    }
+
+    /* ── Section label ── */
+    .s-label {
+      font-size: 0.48rem;
+      color: var(--cream2);
+      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      opacity: 0.6;
+    }
+
+    .s-label .tag {
+      background: var(--olive2);
+      color: var(--amber);
+      padding: 2px 8px;
+      font-size: 0.38rem;
+      letter-spacing: 2px;
+      border: 1px solid var(--amber2);
+      opacity: 1;
+    }
+
+    .s-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    /* ══ CATEGORIES ══ */
+    .cats { display: flex; flex-direction: column; gap: 4px; }
+
+    .cat { border: 1px solid var(--border); background: var(--panel); }
+
+    .cat-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.1s;
+    }
+
+    .cat-toggle:hover { background: var(--olive); }
+
+    .cat-arr {
+      font-size: 0.5rem;
+      color: var(--cream2);
+      transition: transform 0.12s;
+      flex-shrink: 0;
+      opacity: 0.4;
+    }
+
+    .cat.open .cat-arr { transform: rotate(90deg); opacity: 0.9; }
+
+    .cat-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .d-m { background: var(--c-line); box-shadow: 0 0 5px var(--c-line); }
+    .d-t { background: var(--g-line); box-shadow: 0 0 5px var(--g-line); }
+    .d-l { background: var(--amber);  box-shadow: 0 0 5px var(--amber); }
+    .d-f { background: var(--r-line); box-shadow: 0 0 5px var(--r-line); }
+
+    .cat-name { font-size: 0.78rem; color: var(--cream); flex: 1; }
+
+    .cat-stat {
+      font-size: 0.44rem;
+      color: var(--cream2);
+      letter-spacing: 1px;
+      opacity: 0.4;
+    }
+
+    .cat.open .cat-stat { color: var(--amber); opacity: 0.9; }
+
+    .cat-body {
+      display: none;
+      border-top: 1px solid var(--border);
+      padding: 8px 14px 12px 38px;
+      background: var(--surface);
+    }
+
+    .cat.open .cat-body { display: block; }
+
+    .yr {
+      font-size: 0.48rem;
+      color: var(--cream2);
+      letter-spacing: 1px;
+      margin: 4px 0 8px;
+      opacity: 0.35;
+    }
+
+    .entry {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 0;
+      font-size: 0.8rem;
+      border-bottom: 1px solid var(--surface);
+    }
+
+    .entry:last-child { border-bottom: none; }
+
+    .entry a {
+      color: var(--cream2);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.1s;
+    }
+
+    .entry a::before { content: '→ '; color: var(--amber2); }
+    .entry a:hover { color: var(--cream); }
+
+    .entry .ntag {
+      font-size: 0.4rem;
+      border: 1px solid var(--amber2);
+      color: var(--amber);
+      padding: 0 5px;
+      margin-left: auto;
+    }
+
+    .entry.soon { color: var(--cream2); opacity: 0.28; font-size: 0.74rem; }
+    .entry.soon::before { content: '· '; }
+
+    /* ══ POST VIEW ══ */
+    #post-view { display: none; }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.7rem;
+      color: var(--cream2);
+      cursor: pointer;
+      padding: 4px 10px;
+      border: 1px solid var(--border2);
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: color 0.1s, border-color 0.1s;
+    }
+
+    .back:hover { color: var(--cream); border-color: var(--amber2); }
+
+    .post-cat {
+      font-size: 0.48rem;
+      color: var(--amber2);
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .post-title {
+      font-family: var(--px);
+      font-size: clamp(0.6rem, 2vw, 0.82rem);
+      line-height: 1.7;
+      color: var(--cream);
+      margin-bottom: 22px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .post-body {
+      font-size: 0.83rem;
+      line-height: 1.9;
+      color: var(--cream2);
+      max-width: 640px;
+    }
+
+    .post-body p { margin-bottom: 14px; }
+
+    .post-body h3 {
+      font-size: 0.65rem;
+      color: var(--cream);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin: 22px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .post-body h3::before { content: '▶'; font-size: 0.48rem; color: var(--amber2); }
+
+    .post-body code {
+      background: var(--olive);
+      color: var(--crt);
+      padding: 1px 6px;
+      font-size: 0.9em;
+    }
+
+    .post-body em { color: var(--cream2); opacity: 0.5; font-style: italic; }
+
+    /* ══ STATIC PAGES ══ */
+    #about-view, #contact-view { display: none; }
+
+    .s-title {
+      font-family: var(--px);
+      font-size: 0.68rem;
+      color: var(--cream);
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .s-body { font-size: 0.83rem; line-height: 1.9; color: var(--cream2); max-width: 560px; }
+    .s-body p { margin-bottom: 14px; }
+
+    /* ══ FOOTER ══ */
+    footer {
+      margin-top: 48px;
+      padding: 8px 22px;
+      border-top: 1px solid var(--border);
+      background: var(--olive);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+
+    footer span { font-size: 0.5rem; color: var(--cream2); opacity: 0.35; }
+    footer .pn  { opacity: 0.6; color: var(--amber); }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- TOP STRIP -->
+  <div class="top-strip">
+    <div class="strip-id">HARWELL · MAT-LAB · CONSOLE 01</div>
+    <div class="readouts">
+      <div class="r-cell">
+        <span class="r-lbl">MET</span>
+        <span class="r-val g" id="met">T+00:00:00</span>
+      </div>
+      <div class="r-cell">
+        <span class="r-lbl">UTC</span>
+        <span class="r-val" id="clk">--:--:--</span>
+      </div>
+      <div class="r-cell">
+        <span class="r-lbl">LOC</span>
+        <span class="r-val c">HRW 51.5N</span>
+      </div>
+      <div class="r-cell">
+        <span class="r-lbl">SYS</span>
+        <span class="r-val g"><span class="blink">█</span> NOM</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <h1>Mostly Nominal</h1>
+    <div class="h-right">
+      <div class="stat">status : mostly nominal</div>
+      <div class="sub">last check : today · all systems go</div>
+    </div>
+  </header>
+
+  <!-- NAV -->
+  <nav>
+    <a id="nav-home"    onclick="go('home')">    <span class="pn">P.100</span> Home</a>
+    <a id="nav-notes"   onclick="go('notes')">   <span class="pn">P.101</span> Notes</a>
+    <a id="nav-about"   onclick="go('about')">   <span class="pn">P.102</span> About</a>
+    <a id="nav-contact" onclick="go('contact')"> <span class="pn">P.103</span> Contact</a>
+  </nav>
+
+  <div class="content">
+
+    <!-- ━━━ HOME ━━━ -->
+    <div id="home-view">
+
+      <div class="intro">
+        <div class="intro-text">
+          <p>Notes I write so I don't have to remember everything.</p>
+          <p>Mostly for myself — but if it's useful to you, good.<br>
+             -things that worked,<br>
+             -things that didn't,<br>
+             -and things that were... <em>mostly nominal.</em></p>
+        </div>
+
+        <!-- ISS tracker -->
+        <div class="iss-monitor">
+          <canvas id="iss-map" width="300" height="170"></canvas>
+          <div class="iss-readout">
+            <div class="ir"><span class="ir-lbl">LAT</span><span class="ir-val" id="iss-lat">---.-°</span></div>
+            <div class="ir"><span class="ir-lbl">LON</span><span class="ir-val" id="iss-lon">---.-°</span></div>
+            <div class="ir"><span class="ir-lbl">ALT</span><span class="ir-val" id="iss-alt">--- km</span></div>
+            <span class="iss-label">ISS / RT</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bench">
+        <div class="bench-lbl">active · on my bench</div>
+        <p>Currently looking at sensitisation in ferritic stainless grades.
+           DL-EPR curves are behaving weirdly — might be a surface prep issue, might not be.
+           To be continued.</p>
+      </div>
+
+      <div class="s-label">
+        <span class="tag">FLIGHT LOG</span>
+        /home/notes
+      </div>
+
+      <div class="cats">
+
+        <div class="cat open">
+          <div class="cat-toggle" onclick="tog(this.parentElement)">
+            <span class="cat-arr">▶</span>
+            <span class="cat-dot d-m"></span>
+            <span class="cat-name">Materials Engineering</span>
+            <span class="cat-stat">1 ENTRY</span>
+          </div>
+          <div class="cat-body">
+            <div class="yr">── 2026 ──</div>
+            <div class="entry">
+              <a onclick="return post('ss430')">SS430 sensitisation via DL-EPR</a>
+              <span class="ntag">NEW</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cat">
+          <div class="cat-toggle" onclick="tog(this.parentElement)">
+            <span class="cat-arr">▶</span>
+            <span class="cat-dot d-t"></span>
+            <span class="cat-name">Testing &amp; Characterisation</span>
+            <span class="cat-stat">STANDING BY</span>
+          </div>
+          <div class="cat-body">
+            <div class="yr">── 2026 ──</div>
+            <div class="entry soon">Décollage</div>
+          </div>
+        </div>
+
+        <div class="cat">
+          <div class="cat-toggle" onclick="tog(this.parentElement)">
+            <span class="cat-arr">▶</span>
+            <span class="cat-dot d-l"></span>
+            <span class="cat-name">Lab Notes</span>
+            <span class="cat-stat">STANDING BY</span>
+          </div>
+          <div class="cat-body">
+            <div class="yr">── 2026 ──</div>
+            <div class="entry soon">Décollage</div>
+          </div>
+        </div>
+
+        <div class="cat">
+          <div class="cat-toggle" onclick="tog(this.parentElement)">
+            <span class="cat-arr">▶</span>
+            <span class="cat-dot d-f"></span>
+            <span class="cat-name">Non-nominal / Failures</span>
+            <span class="cat-stat">STANDING BY</span>
+          </div>
+          <div class="cat-body">
+            <div class="yr">── 2026 ──</div>
+            <div class="entry soon">Décollage</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ━━━ POST ━━━ -->
+    <div id="post-view">
+      <a class="back" onclick="go('home')">◀ BACK / P.101</a>
+      <div class="post-cat" id="pm"></div>
+      <div class="post-title" id="pt"></div>
+      <div class="post-body" id="pb"></div>
+    </div>
+
+    <!-- ━━━ ABOUT ━━━ -->
+    <div id="about-view">
+      <a class="back" onclick="go('home')">◀ BACK / P.100</a>
+      <div class="s-title">ABOUT</div>
+      <div class="s-body">
+        <p>I'm a materials engineer. This site is where I dump notes I'll need later —
+           experiments, test results, things that surprised me, and things that didn't work.</p>
+        <p>The name comes from rocketry. "Nominal" means within acceptable parameters.
+           Most of what I do is mostly nominal. Not always. But mostly.</p>
+        <p>Based at Harwell, Oxford </p>
+        <p>Wrong place for tutorials. Right place if you've ever spent 3 hours
+           on a DL-EPR curve that looked completely wrong.</p>
+      </div>
+    </div>
+
+    <!-- ━━━ CONTACT ━━━ -->
+    <div id="contact-view">
+      <a class="back" onclick="go('home')">◀ BACK / P.100</a>
+      <div class="s-title">CONTACT</div>
+      <div class="s-body">
+        <p>You can reach me at:</p>
+        <p style="color:var(--crt);">ince.deniz [at] laposte.net</p>
+        <p>Happy to exchange notes, talk about weird results,
+           or commiserate about lab equipment.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>MOSTLY NOMINAL</span>
+    <span class="pn" id="pnum">P.100</span>
+  </footer>
+
+</div>
+<script>
+  const posts = {
+    ss430: {
+      meta: 'MATERIALS ENGINEERING // 2026',
+      title: 'SS430 sensitisation via DL-EPR',
+      body: `
+        <p>Double Loop Electrochemical Potentiokinetic Reactivation (DL-EPR) is one of the
+        cleaner ways to quantify sensitisation in stainless steels without destroying the sample.
+        SS430 — a ferritic grade — has thinner literature than 304/316.</p>
+        <h3>Setup</h3>
+        <p>Standard <code>0.5 M H₂SO₄ + 0.01 M KSCN</code>, room temperature.
+        Scan rate: 1.667 mV/s. −500 mV vs SCE → +200 mV → back.</p>
+        <h3>Observed</h3>
+        <p>Reactivation peak sharper and narrower than in austenitic grades.
+        At ~600 °C / 2h: Ir/Ia below 0.05 — borderline.
+        At 750 °C / 2h: jumped to ~0.18. More convincing.</p>
+        <h3>Annoyances</h3>
+        <p>Residual grinding marks → irreproducible loops.
+        Always finish with 1 µm diamond polish.
+        KSCN concentration is sensitive — weigh it properly.</p>
+        <p><em>— status: mostly nominal</em></p>
+      `
+    }
+  };
+
+  const pages = { home:'P.100', notes:'P.101', about:'P.102', contact:'P.103', post:'P.101' };
+
+  function go(name) {
+    ['home','post','about','contact'].forEach(v =>
+      document.getElementById(v+'-view').style.display = 'none');
+    ['home','notes','about','contact'].forEach(v => {
+      const el = document.getElementById('nav-'+v);
+      if (el) el.classList.remove('active');
+    });
+    if (name === 'notes') name = 'home';
+    document.getElementById(name+'-view').style.display = 'block';
+    const nav = document.getElementById('nav-'+(name==='home'?'home':name));
+    if (nav) nav.classList.add('active');
+    document.getElementById('pnum').textContent = pages[name] || 'P.100';
+    window.scrollTo(0,0);
+    return false;
+  }
+
+  function tog(card) { card.classList.toggle('open'); }
+
+  function post(id) {
+    const p = posts[id]; if (!p) return false;
+    document.getElementById('pm').textContent = p.meta;
+    document.getElementById('pt').textContent = p.title;
+    document.getElementById('pb').innerHTML   = p.body;
+    go('post');
+    return false;
+  }
+
+  /* ══ ISS TRACKER ══ */
+  const MAP_W = 300, MAP_H = 170;
+
+  // Simplified continent outlines [lon, lat]
+  const lands = [
+    // North America
+    [[-167,71],[-140,71],[-52,47],[-82,42],[-81,25],[-90,15],[-83,-1],[-77,8],[-90,15],[-97,20],[-110,24],[-117,32],[-124,37],[-124,49],[-167,60],[-167,71]],
+    // Greenland
+    [[-73,83],[-12,83],[-18,70],[-44,60],[-57,76],[-73,83]],
+    // South America
+    [[-82,12],[-63,12],[-50,5],[-35,-5],[-35,-10],[-40,-22],[-52,-34],[-65,-55],[-75,-55],[-80,-35],[-77,-10],[-82,12]],
+    // Europe (simplified)
+    [[-10,36],[36,36],[42,42],[36,47],[28,56],[30,70],[20,71],[5,58],[-8,44],[-10,36]],
+    // Africa
+    [[-18,15],[15,38],[37,22],[51,12],[51,-12],[35,-35],[18,-35],[14,-20],[-18,-12],[-18,15]],
+    // Asia (main body, rough)
+    [[36,36],[70,22],[80,8],[100,2],[104,1],[108,2],[120,22],[122,30],[141,36],[141,72],[80,72],[40,71],[36,60],[36,36]],
+    // Australia
+    [[114,-22],[124,-14],[136,-12],[138,-14],[148,-18],[154,-26],[150,-38],[130,-32],[116,-35],[114,-22]],
+    // UK (tiny)
+    [[-6,50],[2,51],[2,58],[-4,58],[-6,50]],
+    // Japan (tiny)
+    [[130,31],[132,34],[135,35],[142,45],[141,43],[135,34],[130,31]],
+  ];
+
+  function toXY(lon, lat) {
+    return [(lon + 180) / 360 * MAP_W, (90 - lat) / 180 * MAP_H];
+  }
+
+  function drawISS(lat, lon) {
+    const canvas = document.getElementById('iss-map');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    // Background
+    ctx.fillStyle = '#050905';
+    ctx.fillRect(0, 0, MAP_W, MAP_H);
+
+    // Grid lines
+    ctx.strokeStyle = '#0c160c';
+    ctx.lineWidth = 0.5;
+    for (let lo = -180; lo <= 180; lo += 30) {
+      const [x] = toXY(lo, 0);
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, MAP_H); ctx.stroke();
+    }
+    for (let la = -90; la <= 90; la += 30) {
+      const [, y] = toXY(0, la);
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(MAP_W, y); ctx.stroke();
+    }
+
+    // Continents
+    lands.forEach(pts => {
+      ctx.beginPath();
+      pts.forEach(([lo, la], i) => {
+        const [x, y] = toXY(lo, la);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      });
+      ctx.closePath();
+      ctx.fillStyle = '#142014';
+      ctx.fill();
+      ctx.strokeStyle = '#2a4828';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
+
+    // Ground track
+    const incl = 51.6 * Math.PI / 180;
+    const T = 92.68, n = 360 / T, we = 360 / 1440;
+    const latR = lat * Math.PI / 180;
+    const sinT0 = Math.sin(latR) / Math.sin(incl);
+    let theta0 = Math.asin(Math.max(-1, Math.min(1, sinT0))) * 180 / Math.PI;
+
+    // Draw past track (dim) and future track — orange like Apollo screens
+    [[-T * 0.8, 0, 0.2], [0, T * 1.8, 0.7]].forEach(([dtStart, dtEnd, alpha]) => {
+      let started = false, prevLon = null;
+      const steps = 160;
+      const dtRange = dtEnd - dtStart;
+      ctx.beginPath();
+      for (let k = 0; k <= steps; k++) {
+        const dt = dtStart + (dtRange * k / steps);
+        const theta = theta0 + n * dt;
+        const la = Math.asin(Math.sin(incl) * Math.sin(theta * Math.PI / 180)) * 180 / Math.PI;
+        let lo = lon + (theta - theta0) * Math.cos(incl) - we * dt;
+        while (lo > 180) lo -= 360;
+        while (lo < -180) lo += 360;
+        const [x, y] = toXY(lo, la);
+        if (prevLon !== null && Math.abs(lo - prevLon) > 180) {
+          ctx.strokeStyle = `rgba(255,130,40,${alpha})`;
+          ctx.lineWidth = 1.2;
+          ctx.stroke();
+          ctx.beginPath();
+          started = false;
+        }
+        started ? ctx.lineTo(x, y) : (ctx.moveTo(x, y), started = true);
+        prevLon = lo;
+      }
+      ctx.strokeStyle = `rgba(255,130,40,${alpha})`;
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+    });
+
+    // ISS dot — orange
+    const [ix, iy] = toXY(lon, lat);
+    ctx.beginPath(); ctx.arc(ix, iy, 9, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,130,40,0.1)'; ctx.fill();
+    ctx.strokeStyle = 'rgba(255,130,40,0.6)'; ctx.lineWidth = 0.6;
+    ctx.beginPath(); ctx.moveTo(ix - 11, iy); ctx.lineTo(ix + 11, iy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(ix, iy - 11); ctx.lineTo(ix, iy + 11); ctx.stroke();
+    ctx.beginPath(); ctx.arc(ix, iy, 3, 0, Math.PI * 2);
+    ctx.fillStyle = '#ff8028'; ctx.fill();
+  }
+
+  async function fetchISS() {
+    try {
+      const r = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
+      const d = await r.json();
+      const lat = d.latitude, lon = d.longitude, alt = Math.round(d.altitude);
+      document.getElementById('iss-lat').textContent = lat.toFixed(1) + '°';
+      document.getElementById('iss-lon').textContent = lon.toFixed(1) + '°';
+      document.getElementById('iss-alt').textContent = alt + ' km';
+      drawISS(lat, lon);
+    } catch(e) {
+      // fallback: draw static map if API fails
+      drawISS(0, 0);
+    }
+  }
+
+  // Init after DOM ready
+  window.addEventListener('load', () => {
+    drawISS(51, 0); // default position
+    fetchISS();
+    setInterval(fetchISS, 5000);
+  });
+
+  const t0 = Date.now();
+  function tick() {
+    const n = new Date();
+    const hh = String(n.getHours()).padStart(2,'0');
+    const mm = String(n.getMinutes()).padStart(2,'0');
+    const ss = String(n.getSeconds()).padStart(2,'0');
+    document.getElementById('clk').textContent = hh+':'+mm+':'+ss;
+    const sc = document.getElementById('svg-clk');
+    if (sc) sc.textContent = hh+':'+mm;
+    const e = Math.floor((Date.now()-t0)/1000);
+    document.getElementById('met').textContent =
+      'T+'+String(Math.floor(e/3600)).padStart(2,'0')+':'+
+           String(Math.floor((e%3600)/60)).padStart(2,'0')+':'+
+           String(e%60).padStart(2,'0');
+  }
+  setInterval(tick, 1000);
+  tick();
+  go('home');
+</script>
+</body>
+</html>
