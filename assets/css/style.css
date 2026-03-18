@@ -1,115 +1,482 @@
-.home-grid {
-  display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 18px;
-  align-items: start;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mostly Nominal</title>
+  <meta name="description" content="Mostly Nominal — engineering notes on materials science, testing and lab observations.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Mostly Nominal">
+  <meta property="og:description" content="Engineering notes on materials science and laboratory work.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mostlynominal.github.io">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/satellite.js@5.0.0/dist/satellite.min.js"></script>
+  <style>
+    /* sadece index'e özel ek stiller */
+    .home-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 18px;
+      align-items: start;
+    }
 
-.home-main {
-  min-width: 0;
-}
+    .home-main {
+      min-width: 0;
+    }
 
-.home-side {
-  min-width: 0;
-}
+    .home-side {
+      min-width: 0;
+    }
 
-.iss-monitor {
-  background: #040704;
-  border: 1px solid var(--olive2);
-  border-top: 2px solid var(--border2);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
+    .iss-monitor {
+      background: #040704;
+      border: 1px solid var(--olive2);
+      border-top: 2px solid var(--border2);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
 
-.iss-monitor::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  box-shadow: inset 0 0 20px rgba(0,0,0,0.7);
-  pointer-events: none;
-  z-index: 1;
-}
+    .iss-monitor::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.7);
+      pointer-events: none;
+      z-index: 1;
+    }
 
-.iss-head {
-  background: #070d07;
-  border-bottom: 1px solid var(--border);
-  color: var(--amber);
-  font-size: 0.54rem;
-  letter-spacing: 3px;
-  padding: 6px 9px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+    .iss-head {
+      background: #070d07;
+      border-bottom: 1px solid var(--border);
+      color: var(--amber);
+      font-size: 0.54rem;
+      letter-spacing: 3px;
+      padding: 6px 9px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-.iss-head-right {
-  font-size: 0.44rem;
-  color: var(--cream2);
-  opacity: 0.4;
-  letter-spacing: 2px;
-}
+    .iss-head-right {
+      font-size: 0.44rem;
+      color: var(--cream2);
+      opacity: 0.4;
+      letter-spacing: 2px;
+    }
 
-.iss-monitor canvas {
-  display: block;
-  width: 100%;
-  position: relative;
-  z-index: 0;
-}
+    .iss-monitor canvas {
+      display: block;
+      width: 100%;
+      position: relative;
+      z-index: 0;
+    }
 
-.iss-readout {
-  background: #030603;
-  border-top: 1px solid var(--border);
-  padding: 6px 9px;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr auto;
-  gap: 4px;
-  align-items: center;
-}
+    .iss-readout {
+      background: #030603;
+      border-top: 1px solid var(--border);
+      padding: 6px 9px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 4px;
+      align-items: center;
+    }
 
-.iss-readout .ir {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
+    .iss-readout .ir {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
 
-.iss-readout .ir-lbl {
-  font-size: 0.38rem;
-  color: var(--cream2);
-  opacity: 0.4;
-  letter-spacing: 2px;
-}
+    .iss-readout .ir-lbl {
+      font-size: 0.38rem;
+      color: var(--cream2);
+      opacity: 0.4;
+      letter-spacing: 2px;
+    }
 
-.iss-readout .ir-val {
-  font-size: 0.7rem;
-  color: #ff8028;
-  letter-spacing: 1px;
-}
+    .iss-readout .ir-val {
+      font-size: 0.7rem;
+      color: #ff8028;
+      letter-spacing: 1px;
+    }
 
-.iss-label {
-  font-size: 0.38rem;
-  color: var(--cream2);
-  opacity: 0.3;
-  letter-spacing: 2px;
-  text-align: right;
-}
+    .iss-label {
+      font-size: 0.38rem;
+      color: var(--cream2);
+      opacity: 0.3;
+      letter-spacing: 2px;
+      text-align: right;
+    }
 
-.iss-credit {
-  background: #020402;
-  border-top: 1px solid rgba(34,48,32,0.65);
-  padding: 4px 9px 5px;
-  font-size: 0.34rem;
-  letter-spacing: 1.5px;
-  color: var(--cream2);
-  opacity: 0.42;
-  text-align: right;
-  position: relative;
-  z-index: 2;
-}
+    .iss-credit {
+      background: #020402;
+      border-top: 1px solid rgba(34,48,32,0.65);
+      padding: 4px 9px 5px;
+      font-size: 0.34rem;
+      letter-spacing: 1.5px;
+      color: var(--cream2);
+      opacity: 0.42;
+      text-align: right;
+      position: relative;
+      z-index: 2;
+    }
 
-@media (max-width: 900px) {
-  .home-grid {
-    grid-template-columns: 1fr;
-  }
-}
+    .entry-link {
+      color: var(--cream2);
+      text-decoration: none;
+      transition: color 0.1s;
+    }
+
+    .entry-link:hover {
+      color: var(--cream);
+    }
+
+    .entry-link::before {
+      content: '→ ';
+      color: var(--amber2);
+    }
+
+    @media (max-width: 900px) {
+      .home-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top-strip">
+      <div class="strip-id">HARWELL · MAT-LAB · FLIGHT LOG</div>
+    </div>
+
+    <header>
+      <div class="h-badge">ENGINEERING NOTES // MATERIALS // LAB WORK</div>
+      <h1>Mostly Nominal</h1>
+    </header>
+
+    <div class="content">
+      <div class="home-grid">
+
+        <div class="home-main">
+          <div class="post-shell" style="margin-bottom: 18px;">
+            <div class="post-head">
+              <span class="post-meta">OPERATOR LOG</span>
+              <span class="post-state">STATUS : NOMINAL</span>
+            </div>
+            <div class="post-body-wrap">
+              <div class="post-title">Welcome</div>
+              <div class="post-body">
+                <p>Notes I write so I do not have to remember everything.</p>
+                <p>Mostly for myself — but if it is useful to you, good.</p>
+                <p>Things that worked, things that did not, and things that were… <em>mostly nominal.</em></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="post-shell" style="margin-bottom: 18px;">
+            <div class="post-head">
+              <span class="post-meta">MATERIALS ENGINEERING // 2026</span>
+              <span class="post-state">1 ENTRY</span>
+            </div>
+            <div class="post-body-wrap">
+              <div class="post-title">Materials Engineering</div>
+              <div class="post-body">
+                <p><a class="entry-link" href="articles/ss430-dl-epr.html">SS430 sensitisation via DL-EPR</a></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="post-shell" style="margin-bottom: 18px;">
+            <div class="post-head">
+              <span class="post-meta">TESTING &amp; CHARACTERISATION</span>
+              <span class="post-state">STANDING BY</span>
+            </div>
+            <div class="post-body-wrap">
+              <div class="post-title">Testing &amp; Characterisation</div>
+              <div class="post-body">
+                <p><em>No entries yet.</em></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="post-shell" style="margin-bottom: 18px;">
+            <div class="post-head">
+              <span class="post-meta">LAB NOTES</span>
+              <span class="post-state">STANDING BY</span>
+            </div>
+            <div class="post-body-wrap">
+              <div class="post-title">Lab Notes</div>
+              <div class="post-body">
+                <p><em>No entries yet.</em></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="post-shell" style="margin-bottom: 18px;">
+            <div class="post-head">
+              <span class="post-meta">NON-NOMINAL / FAILURES</span>
+              <span class="post-state">STANDING BY</span>
+            </div>
+            <div class="post-body-wrap">
+              <div class="post-title">Non-nominal / Failures</div>
+              <div class="post-body">
+                <p><em>No entries yet.</em></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="post-shell" style="margin-bottom: 18px;">
+            <div class="post-head">
+              <span class="post-meta">ABOUT</span>
+              <span class="post-state">INFO</span>
+            </div>
+            <div class="post-body-wrap">
+              <div class="post-title">About</div>
+              <div class="post-body">
+                <p>I am a materials engineer. This site is where I keep notes on experiments, observations, and lab work I may need later.</p>
+                <p>The name comes from rocketry: “nominal” means within acceptable parameters. Most things are mostly nominal.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="post-shell">
+            <div class="post-head">
+              <span class="post-meta">CONTACT</span>
+              <span class="post-state">OPEN</span>
+            </div>
+            <div class="post-body-wrap">
+              <div class="post-title">Contact</div>
+              <div class="post-body">
+                <p>You can reach me at <a href="mailto:ince.deniz@laposte.net">ince.deniz@laposte.net</a>.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="home-side">
+          <div class="iss-monitor">
+            <div class="iss-head">
+              <span>TRACKING DISPLAY</span>
+              <span class="iss-head-right">ISS / OBJ 25544</span>
+            </div>
+            <canvas id="iss-map" width="300" height="200"></canvas>
+            <div class="iss-readout">
+              <div class="ir"><span class="ir-lbl">LAT</span><span class="ir-val" id="iss-lat">---.-°</span></div>
+              <div class="ir"><span class="ir-lbl">LON</span><span class="ir-val" id="iss-lon">---.-°</span></div>
+              <div class="ir"><span class="ir-lbl">ALT</span><span class="ir-val" id="iss-alt">--- km</span></div>
+              <span class="iss-label">ISS<br>GROUND<br>TRACK</span>
+            </div>
+            <div class="iss-credit">powered by orbitalradar.com</div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+
+    <footer>
+      <span>MOSTLY NOMINAL // HRW MAT-LAB</span>
+      <span>INDEX</span>
+    </footer>
+  </div>
+
+  <script>
+    const MAP_W = 300, MAP_H = 200;
+
+    const lands = [
+      [[-167,71],[-140,71],[-52,47],[-82,42],[-81,25],[-90,15],[-83,-1],[-77,8],[-90,15],[-97,20],[-110,24],[-117,32],[-124,37],[-124,49],[-167,60],[-167,71]],
+      [[-73,83],[-12,83],[-18,70],[-44,60],[-57,76],[-73,83]],
+      [[-82,12],[-63,12],[-50,5],[-35,-5],[-35,-10],[-40,-22],[-52,-34],[-65,-55],[-75,-55],[-80,-35],[-77,-10],[-82,12]],
+      [[-10,36],[36,36],[42,42],[36,47],[28,56],[30,70],[20,71],[5,58],[-8,44],[-10,36]],
+      [[-18,15],[15,38],[37,22],[51,12],[51,-12],[35,-35],[18,-35],[14,-20],[-18,-12],[-18,15]],
+      [[36,36],[70,22],[80,8],[100,2],[104,1],[108,2],[120,22],[122,30],[141,36],[141,72],[80,72],[40,71],[36,60],[36,36]],
+      [[114,-22],[124,-14],[136,-12],[138,-14],[148,-18],[154,-26],[150,-38],[130,-32],[116,-35],[114,-22]],
+      [[-6,50],[2,51],[2,58],[-4,58],[-6,50]],
+      [[130,31],[132,34],[135,35],[142,45],[141,43],[135,34],[130,31]],
+    ];
+
+    function toXY(lon, lat) {
+      return [(lon + 180) / 360 * MAP_W, (90 - lat) / 180 * MAP_H];
+    }
+
+    function drawBaseMap(ctx) {
+      ctx.fillStyle = '#030503';
+      ctx.fillRect(0, 0, MAP_W, MAP_H);
+
+      ctx.strokeStyle = '#0c160c';
+      ctx.lineWidth = 0.5;
+      for (let lo = -180; lo <= 180; lo += 30) {
+        const [x] = toXY(lo, 0);
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, MAP_H); ctx.stroke();
+      }
+      for (let la = -90; la <= 90; la += 30) {
+        const [, y] = toXY(0, la);
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(MAP_W, y); ctx.stroke();
+      }
+
+      lands.forEach(pts => {
+        ctx.beginPath();
+        pts.forEach(([lo, la], i) => {
+          const [x, y] = toXY(lo, la);
+          i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        });
+        ctx.closePath();
+        ctx.fillStyle = '#0e1e0e';
+        ctx.fill();
+        ctx.strokeStyle = '#1e3820';
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+      });
+    }
+
+    let issSatrec = null;
+    let lastTleFetch = 0;
+
+    async function loadISSTLE() {
+      const res = await fetch('https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE');
+      const text = (await res.text()).trim();
+      const lines = text.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+
+      let line1 = null, line2 = null;
+      for (const line of lines) {
+        if (line.startsWith('1 ')) line1 = line;
+        if (line.startsWith('2 ')) line2 = line;
+      }
+
+      if (!line1 || !line2) throw new Error('TLE parse failed');
+
+      issSatrec = satellite.twoline2satrec(line1, line2);
+      lastTleFetch = Date.now();
+    }
+
+    function propagateToLatLonAlt(date) {
+      if (!issSatrec) return null;
+
+      const pv = satellite.propagate(issSatrec, date);
+      if (!pv.position) return null;
+
+      const gmst = satellite.gstime(date);
+      const gd = satellite.eciToGeodetic(pv.position, gmst);
+
+      return {
+        lat: satellite.degreesLat(gd.latitude),
+        lon: satellite.degreesLong(gd.longitude),
+        alt: gd.height
+      };
+    }
+
+    function buildTrackPoints(now, minutesBefore, minutesAfter, stepSeconds) {
+      const points = [];
+      const startMs = now.getTime() - minutesBefore * 60 * 1000;
+      const endMs   = now.getTime() + minutesAfter * 60 * 1000;
+
+      for (let t = startMs; t <= endMs; t += stepSeconds * 1000) {
+        const p = propagateToLatLonAlt(new Date(t));
+        if (p) points.push(p);
+      }
+      return points;
+    }
+
+    function splitDateline(points) {
+      const segments = [];
+      let current = [];
+
+      for (let i = 0; i < points.length; i++) {
+        if (i > 0 && Math.abs(points[i].lon - points[i - 1].lon) > 180) {
+          if (current.length) segments.push(current);
+          current = [];
+        }
+        current.push(points[i]);
+      }
+      if (current.length) segments.push(current);
+      return segments;
+    }
+
+    function drawSegments(ctx, segments, alpha, width) {
+      segments.forEach(seg => {
+        if (seg.length < 2) return;
+        ctx.beginPath();
+        seg.forEach((p, i) => {
+          const [x, y] = toXY(p.lon, p.lat);
+          i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        });
+        ctx.strokeStyle = `rgba(255,130,40,${alpha})`;
+        ctx.lineWidth = width;
+        ctx.stroke();
+      });
+    }
+
+    function drawISS(lat, lon, trackPoints, currentIndex) {
+      const canvas = document.getElementById('iss-map');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      drawBaseMap(ctx);
+
+      if (trackPoints && trackPoints.length > 1) {
+        const past = trackPoints.slice(0, currentIndex + 1);
+        const future = trackPoints.slice(currentIndex);
+
+        drawSegments(ctx, splitDateline(past), 0.18, 1.0);
+        drawSegments(ctx, splitDateline(future), 0.65, 1.0);
+      }
+
+      const [ix, iy] = toXY(lon, lat);
+      ctx.beginPath(); ctx.arc(ix, iy, 10, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,130,40,0.07)';
+      ctx.fill();
+
+      ctx.strokeStyle = 'rgba(255,130,40,0.5)';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.moveTo(ix - 12, iy); ctx.lineTo(ix + 12, iy); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(ix, iy - 12); ctx.lineTo(ix, iy + 12); ctx.stroke();
+
+      ctx.beginPath(); ctx.arc(ix, iy, 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = '#ff8028';
+      ctx.fill();
+    }
+
+    async function updateISS() {
+      try {
+        if (!issSatrec || (Date.now() - lastTleFetch) > 6 * 60 * 60 * 1000) {
+          await loadISSTLE();
+        }
+
+        const now = new Date();
+        const current = propagateToLatLonAlt(now);
+        if (!current) throw new Error('Propagation failed');
+
+        document.getElementById('iss-lat').textContent = current.lat.toFixed(1) + '°';
+        document.getElementById('iss-lon').textContent = current.lon.toFixed(1) + '°';
+        document.getElementById('iss-alt').textContent = Math.round(current.alt) + ' km';
+
+        const minutesBefore = 75;
+        const minutesAfter = 110;
+        const stepSeconds = 30;
+
+        const trackPoints = buildTrackPoints(now, minutesBefore, minutesAfter, stepSeconds);
+        const currentIndex = Math.floor((minutesBefore * 60) / stepSeconds);
+
+        drawISS(current.lat, current.lon, trackPoints, currentIndex);
+      } catch (e) {
+        const canvas = document.getElementById('iss-map');
+        if (canvas) {
+          const ctx = canvas.getContext('2d');
+          drawBaseMap(ctx);
+        }
+      }
+    }
+
+    window.addEventListener('load', async () => {
+      const canvas = document.getElementById('iss-map');
+      if (canvas) drawBaseMap(canvas.getContext('2d'));
+      await updateISS();
+      setInterval(updateISS, 5000);
+    });
+  </script>
+</body>
+</html>
