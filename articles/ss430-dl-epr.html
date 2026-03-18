@@ -3,291 +3,151 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SS430 sensitisation via DL-EPR — Mostly Nominal</title>
-  <meta name="description" content="SS430 sensitisation via DL-EPR — notes on ferritic stainless steel sensitisation and electrochemical reactivation testing.">
+  <title>SS430 Sensitisation via DL-EPR — Mostly Nominal</title>
+  <meta name="description" content="DL-EPR measurements on ferritic stainless SS430 — setup, observations, and notes on surface prep.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="SS430 Sensitisation via DL-EPR — Mostly Nominal">
+  <meta property="og:description" content="DL-EPR measurements on ferritic stainless SS430 — setup, observations, and notes on surface prep.">
+  <meta property="og:type" content="article">
   <link rel="icon" type="image/png" href="../favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:      #080b08;
-      --surface: #0b0f0b;
-      --panel:   #0d120d;
-      --olive:   #141c14;
-      --olive2:  #1c2a1c;
-      --border:  #1a2418;
-      --border2: #223020;
-      --amber:   #e09428;
-      --amber2:  #a06018;
-      --amber3:  #5a3a08;
-      --cream:   #ccc4a4;
-      --cream2:  #8a8468;
-      --crt:     #a8d4e8;
-      --g-line:  #40e870;
-      --mono:    'Share Tech Mono', 'Courier New', monospace;
-      --px:      'Press Start 2P', monospace;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--cream);
-      font-family: var(--mono);
-      font-size: 16px;
-      min-height: 100vh;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,0.13) 2px,
-        rgba(0,0,0,0.13) 4px
-      );
-      pointer-events: none;
-      z-index: 9999;
-    }
-
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%);
-      pointer-events: none;
-      z-index: 9998;
-    }
-
-    .wrap {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 0 0 80px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .top-strip {
-      background: var(--olive);
-      border-bottom: 2px solid var(--border2);
-      padding: 0 18px;
-      display: flex;
-      align-items: stretch;
-    }
-
-    .strip-id {
-      font-size: 0.7rem;
-      color: var(--cream2);
-      letter-spacing: 3px;
-      padding: 10px 16px 10px 0;
-      border-right: 1px solid var(--border2);
-      display: flex;
-      align-items: center;
-      flex-shrink: 0;
-    }
-
-    .strip-id::before {
-      content: '';
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--g-line);
-      box-shadow: 0 0 6px var(--g-line);
-      margin-right: 10px;
-    }
-
-    header {
-      padding: 20px 18px 18px;
-      border-bottom: 1px solid var(--border);
-      background: linear-gradient(180deg, #0c110c 0%, var(--bg) 100%);
-    }
-
-    .h-badge {
-      font-size: 0.48rem;
-      letter-spacing: 3px;
-      color: var(--amber2);
-      margin-bottom: 8px;
-    }
-
-    h1 {
-      font-family: var(--px);
-      font-size: clamp(0.95rem, 2.2vw, 1.2rem);
-      color: var(--cream);
-      line-height: 1.8;
-    }
-
-    .content {
-      padding: 24px 18px 0;
-    }
-
-    .back {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 0.84rem;
-      color: var(--cream2);
-      cursor: pointer;
-      padding: 6px 12px;
-      border: 1px solid var(--border2);
-      text-decoration: none;
-      margin-bottom: 20px;
-      transition: color 0.1s, border-color 0.1s;
-    }
-
-    .back:hover {
-      color: var(--cream);
-      border-color: var(--amber2);
-    }
-
-    .post-shell {
-      border: 1px solid var(--border2);
-      background: var(--panel);
-    }
-
-    .post-head {
-      background: var(--olive);
-      border-bottom: 1px solid var(--border);
-      padding: 8px 12px;
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .post-meta {
-      font-size: 0.58rem;
-      color: var(--amber);
-      letter-spacing: 3px;
-    }
-
-    .post-state {
-      font-size: 0.5rem;
-      color: var(--g-line);
-      letter-spacing: 2px;
-    }
-
-    .post-body-wrap {
-      padding: 18px 18px 24px;
-    }
-
-    .post-title {
-      font-family: var(--px);
-      font-size: clamp(0.85rem, 2vw, 1rem);
-      line-height: 1.9;
-      color: var(--cream);
-      margin-bottom: 22px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .post-body {
-      font-size: 0.95rem;
-      line-height: 2.1;
-      color: var(--cream2);
-      max-width: 760px;
-    }
-
-    .post-body p { margin-bottom: 16px; }
-
-    .post-body h3 {
-      font-size: 0.78rem;
-      color: var(--cream);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin: 26px 0 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .post-body h3::before {
-      content: '▶';
-      font-size: 0.52rem;
-      color: var(--amber2);
-    }
-
-    .post-body code {
-      background: var(--olive2);
-      color: var(--crt);
-      padding: 1px 7px;
-      font-size: 0.9em;
-      border: 1px solid var(--border2);
-    }
-
-    .post-body em {
-      color: var(--cream2);
-      opacity: 0.55;
-      font-style: italic;
-    }
-
-    footer {
-      margin-top: 40px;
-      padding: 10px 18px;
-      border-top: 1px solid var(--border);
-      background: var(--olive);
-      display: flex;
-      justify-content: space-between;
-      gap: 6px;
-    }
-
-    footer span {
-      font-size: 0.62rem;
-      color: var(--cream2);
-      opacity: 0.45;
-    }
-  </style>
+  <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
-  <div class="wrap">
-    <div class="top-strip">
-      <div class="strip-id">HARWELL · MAT-LAB · ARTICLE VIEW</div>
+<div class="wrap">
+
+  <div class="ticker-wrap">
+    <div class="ticker-label">FLT LOG</div>
+    <div class="ticker-track">
+      <span>CONSOLE 01 · HARWELL MAT-LAB</span><span class="sep">///</span>
+      <span>MATERIALS ENGINEERING // 2026</span><span class="sep">///</span>
+      <span>SS430 SENSITISATION · DL-EPR</span><span class="sep">///</span>
+      <span>0.5M H₂SO₄ + 0.01M KSCN · RT</span><span class="sep">///</span>
+      <span>STATUS: NOMINAL</span><span class="sep">///</span>
+      <span>CONSOLE 01 · HARWELL MAT-LAB</span><span class="sep">///</span>
+      <span>MATERIALS ENGINEERING // 2026</span><span class="sep">///</span>
+      <span>SS430 SENSITISATION · DL-EPR</span><span class="sep">///</span>
+      <span>0.5M H₂SO₄ + 0.01M KSCN · RT</span><span class="sep">///</span>
+      <span>STATUS: NOMINAL</span><span class="sep">///</span>
     </div>
+  </div>
 
-    <header>
-      <div class="h-badge">FLIGHT LOG // MATERIALS ENGINEERING // 2026</div>
-      <h1>Mostly Nominal</h1>
-    </header>
-
-    <div class="content">
-      <a class="back" href="../index.html">◀ BACK / P.100</a>
-
-      <div class="post-shell">
-        <div class="post-head">
-          <span class="post-meta">MATERIALS ENGINEERING // 2026</span>
-          <span class="post-state">STATUS : NOMINAL</span>
-        </div>
-
-        <div class="post-body-wrap">
-          <div class="post-title">SS430 sensitisation via DL-EPR</div>
-
-          <div class="post-body">
-            <p>Double Loop Electrochemical Potentiokinetic Reactivation (DL-EPR) is one of the cleaner ways to quantify sensitisation in stainless steels without destroying the sample. SS430 — a ferritic grade — has thinner literature than 304/316.</p>
-
-            <h3>Setup</h3>
-            <p>Standard <code>0.5 M H₂SO₄ + 0.01 M KSCN</code>, room temperature. Scan rate: 1.667 mV/s. −500 mV vs SCE → +200 mV → back.</p>
-
-            <h3>Observed</h3>
-            <p>Reactivation peak sharper and narrower than in austenitic grades. At ~600 °C / 2h: Ir/Ia below 0.05 — borderline. At 750 °C / 2h: jumped to ~0.18. More convincing.</p>
-
-            <h3>Annoyances</h3>
-            <p>Residual grinding marks → irreproducible loops. Always finish with 1 µm diamond polish. KSCN concentration is sensitive — weigh it properly.</p>
-
-            <p><em>— status: mostly nominal</em></p>
-          </div>
-        </div>
+  <div class="top-strip">
+    <div class="strip-id">HARWELL · MAT-LAB · ARTICLE VIEW</div>
+    <div class="readouts">
+      <div class="r-cell">
+        <span class="r-lbl">UTC</span>
+        <span class="r-val" id="clk">--:--:--</span>
+      </div>
+      <div class="r-cell">
+        <span class="r-lbl">CAT</span>
+        <span class="r-val c">MAT</span>
+      </div>
+      <div class="r-cell">
+        <span class="r-lbl">YEAR</span>
+        <span class="r-val a">2026</span>
+      </div>
+      <div class="r-cell">
+        <span class="r-lbl">GRADE</span>
+        <span class="r-val c">SS430</span>
+      </div>
+      <div class="r-cell">
+        <span class="r-lbl">STATUS</span>
+        <span class="r-val g"><span class="blink">█</span> NOM</span>
       </div>
     </div>
-
-    <footer>
-      <span>MOSTLY NOMINAL // HRW MAT-LAB</span>
-      <span>ARTICLE VIEW</span>
-    </footer>
   </div>
+
+  <header>
+    <div>
+      <div class="h-badge">MATERIALS ENGINEERING // 2026 // HRW</div>
+      <h1>Mostly Nominal</h1>
+    </div>
+    <div class="h-right">
+      <div class="stat">status : mostly nominal</div>
+      <div class="sub">article view</div>
+    </div>
+  </header>
+
+  <nav>
+    <a href="../index.html"><span class="pn">P.100</span> Home</a>
+    <a href="../index.html"><span class="pn">P.101</span> Notes</a>
+    <a href="../index.html#about"><span class="pn">P.102</span> About</a>
+    <a href="../index.html#contact"><span class="pn">P.103</span> Contact</a>
+  </nav>
+
+  <div class="content">
+    <a class="back" href="../index.html">◀ BACK / FLIGHT LOG</a>
+
+    <div class="post-cat">MATERIALS ENGINEERING // 2026</div>
+    <div class="post-title">SS430 sensitisation via DL-EPR</div>
+
+    <div class="post-body">
+
+      <p>Double Loop Electrochemical Potentiokinetic Reactivation (DL-EPR) is one of the
+      cleaner ways to quantify sensitisation in stainless steels without destroying the sample.
+      SS430 — a ferritic grade — has thinner literature than 304/316, which makes it
+      slightly more interesting to work with.</p>
+
+      <h3>Context</h3>
+      <p>Sensitisation in ferritic grades occurs at different temperature ranges compared
+      to austenitic steels. Chromium carbide and nitride precipitation at grain boundaries
+      depletes the adjacent matrix — but the kinetics are faster and the recovery behaviour
+      is different. DL-EPR catches this by measuring the ratio of the reactivation current
+      to the activation current (<code>Ir/Ia</code>). Higher ratio = more sensitised.</p>
+
+      <h3>Setup</h3>
+      <p>Standard electrolyte: <code>0.5 M H₂SO₄ + 0.01 M KSCN</code>, room temperature.
+      Scan rate: <code>1.667 mV/s</code>. Potential sweep from <code>−500 mV vs SCE</code>
+      to <code>+200 mV</code>, then reversed back to start.</p>
+      <p>Specimens were heat-treated in two conditions before testing:</p>
+      <p>· ~600 °C / 2 h — borderline sensitisation range<br>
+         · 750 °C / 2 h — expected higher sensitisation</p>
+      <p>Surface preparation: ground to 1200 grit, finished with 1 µm diamond suspension.
+      Rinsed with ethanol, dried in air. Mounted face-down in the cell immediately.</p>
+
+      <h3>Observed</h3>
+      <p>Reactivation peak in SS430 is sharper and narrower than in austenitic grades —
+      the loop closes faster. This seems consistent with the faster diffusion kinetics
+      in the ferritic matrix.</p>
+      <p>At ~600 °C / 2 h: <code>Ir/Ia</code> below 0.05 — borderline. Hard to call
+      definitively sensitised at this condition.</p>
+      <p>At 750 °C / 2 h: jumped to ~0.18. Much more convincing. Grain boundary attack
+      visible in post-test optical inspection.</p>
+
+      <h3>Notes</h3>
+      <p>Residual grinding marks from coarser grit gave irreproducible loops on early runs —
+      probably preferential attack at surface defects inflating the reactivation peak.
+      Always finish with 1 µm diamond. This is not optional.</p>
+      <p>KSCN concentration is sensitive. Weigh it properly — a small error shifts the
+      reactivation peak shape noticeably. Mixed 1 L batches, used within 48 h.</p>
+      <p>The 600 °C condition needs more repeat runs. Three specimens, two outliers.
+      Suspect surface prep variability. To be continued.</p>
+
+      <p><em>— status: mostly nominal</em></p>
+
+    </div>
+  </div>
+
+  <footer>
+    <span>MOSTLY NOMINAL // HRW MAT-LAB</span>
+    <div class="fc">
+      <span>SYS: <span style="color:var(--g-line)">NOM</span></span>
+      <span class="pn">P.101</span>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  function tick() {
+    const n = new Date();
+    const pad = v => String(v).padStart(2,'0');
+    const el = document.getElementById('clk');
+    if (el) el.textContent = pad(n.getUTCHours())+':'+pad(n.getUTCMinutes())+':'+pad(n.getUTCSeconds());
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
 </body>
 </html>
