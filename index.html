@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MOSTLY NOMINAL — FLIGHT LOG</title>
-  <meta name="description" content="Mostly Nominal — engineering notes on materials science, testing and lab observations by Deniz Ince.">
-  <meta name="author" content="Deniz Ince">
+  <meta name="description" content="Mostly Nominal — engineering notes on materials science, testing and lab observations">
   <meta name="robots" content="index, follow">
   <meta property="og:title" content="Mostly Nominal">
   <meta property="og:description" content="Engineering notes on materials science and laboratory work.">
@@ -164,6 +163,15 @@
       flex-direction: column;
     }
 
+    .iss-head {
+      background: #091009;
+      border-bottom: 1px solid var(--border);
+      color: var(--amber);
+      font-size: 0.62rem;
+      letter-spacing: 2px;
+      padding: 7px 9px;
+    }
+
     .iss-monitor canvas {
       display: block;
       width: 100%;
@@ -203,6 +211,7 @@
       color: var(--cream2);
       opacity: 0.35;
       letter-spacing: 2px;
+      text-align: right;
     }
 
     .bench {
@@ -501,7 +510,7 @@
       </div>
       <div class="r-cell">
         <span class="r-lbl">LOC</span>
-        <span class="r-val c">HRW 51.5N</span>
+        <span class="r-val c">HRW 51°34'34.9"N 1°18'34.8"W</span>
       </div>
       <div class="r-cell">
         <span class="r-lbl">SYS</span>
@@ -539,12 +548,13 @@
         </div>
 
         <div class="iss-monitor">
+          <div class="iss-head">TRACKING DISPLAY</div>
           <canvas id="iss-map" width="300" height="170"></canvas>
           <div class="iss-readout">
             <div class="ir"><span class="ir-lbl">LAT</span><span class="ir-val" id="iss-lat">---.-°</span></div>
             <div class="ir"><span class="ir-lbl">LON</span><span class="ir-val" id="iss-lon">---.-°</span></div>
             <div class="ir"><span class="ir-lbl">ALT</span><span class="ir-val" id="iss-alt">--- km</span></div>
-            <span class="iss-label">ISS / RT</span>
+            <span class="iss-label">ISS GROUND TRACK</span>
           </div>
         </div>
       </div>
@@ -648,7 +658,7 @@
       <div class="s-body">
         <p>You can reach me at:</p>
         <p>
-          <a class="contact-email" href="mailto:ince.deniz@laposte.net">ince.deniz@laposte.net</a>
+          <a class="contact-email" href="mailto:mail@mailt">mail@mail</a>
         </p>
         <p>Happy to exchange notes, talk about weird results,
            or commiserate about lab equipment.</p>
