@@ -12,6 +12,7 @@
   <meta property="og:url" content="https://mostlynominal.github.io">
   <link rel="icon" type="image/png" href="favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/satellite.js@5.0.0/dist/satellite.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -50,7 +51,6 @@
       overflow-x: hidden;
     }
 
-    /* CRT scanline overlay */
     body::before {
       content: '';
       position: fixed;
@@ -66,7 +66,6 @@
       z-index: 9999;
     }
 
-    /* subtle vignette */
     body::after {
       content: '';
       position: fixed;
@@ -78,7 +77,6 @@
 
     .wrap { max-width: 1140px; margin: 0 auto; padding: 0 0 80px; }
 
-    /* ── TICKER ── */
     .ticker-wrap {
       background: #060906;
       border-bottom: 1px solid var(--amber3);
@@ -127,7 +125,6 @@
       100% { transform: translateX(-50%); }
     }
 
-    /* ── TOP STRIP ── */
     .top-strip {
       background: var(--olive);
       border-bottom: 2px solid var(--border2);
@@ -180,7 +177,6 @@
     .blink { animation: bl 1.1s step-end infinite; }
     @keyframes bl { 0%,100%{opacity:1} 50%{opacity:0} }
 
-    /* ── HEADER ── */
     header {
       padding: 20px 18px 18px;
       border-bottom: 1px solid var(--border);
@@ -192,7 +188,6 @@
       position: relative;
     }
 
-    /* decorative corner brackets */
     header::before, header::after {
       content: '';
       position: absolute;
@@ -220,7 +215,6 @@
     .h-right .stat { font-size: 1rem; color: var(--cream2); }
     .h-right .sub  { font-size: 0.78rem; color: var(--cream2); opacity: 0.5; margin-top: 5px; }
 
-    /* ── NAV ── */
     nav {
       background: var(--olive);
       border-bottom: 2px solid var(--border2);
@@ -229,7 +223,6 @@
       position: relative;
     }
 
-    /* bottom edge glow */
     nav::after {
       content: '';
       position: absolute;
@@ -258,10 +251,8 @@
     nav a.active .pn { opacity: 1; color: var(--amber); }
     nav a.active { border-top: 1px solid var(--amber3); }
 
-    /* ── CONTENT ── */
     .content { padding: 22px 18px 0; }
 
-    /* ── INTRO / MISSION CONTROL LAYOUT ── */
     .intro {
       display: grid;
       grid-template-columns: 1fr 320px;
@@ -272,14 +263,12 @@
       margin-bottom: 20px;
     }
 
-    /* Left column: stack panels like MCC consoles */
     .intro-left {
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
 
-    /* MCC-style panel with header bar */
     .mc-panel {
       border: 1px solid var(--border2);
       background: var(--panel);
@@ -340,7 +329,6 @@
     .intro-text p:last-child { margin-bottom: 0; }
     .intro-text em { color: var(--cream); font-style: normal; }
 
-    /* ── STATUS GRID (MCC readout board) ── */
     .status-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -363,7 +351,6 @@
     .sg-val.r { color: var(--r-line); }
     .sg-val.c { color: var(--c-line); }
 
-    /* ── ISS MONITOR ── */
     .iss-monitor {
       background: #040704;
       border: 1px solid var(--olive2);
@@ -374,7 +361,6 @@
       position: relative;
     }
 
-    /* monitor bezel effect */
     .iss-monitor::before {
       content: '';
       position: absolute;
@@ -425,7 +411,19 @@
     .iss-readout .ir-val { font-size: 0.7rem; color: var(--orange); letter-spacing: 1px; }
     .iss-label { font-size: 0.38rem; color: var(--cream2); opacity: 0.3; letter-spacing: 2px; text-align: right; }
 
-    /* ── BENCH ── */
+    .iss-credit {
+      background: #020402;
+      border-top: 1px solid rgba(34,48,32,0.65);
+      padding: 4px 9px 5px;
+      font-size: 0.34rem;
+      letter-spacing: 1.5px;
+      color: var(--cream2);
+      opacity: 0.42;
+      text-align: right;
+      position: relative;
+      z-index: 2;
+    }
+
     .bench {
       margin-bottom: 18px;
     }
@@ -436,7 +434,6 @@
       color: var(--cream2);
     }
 
-    /* ── SECTION LABEL ── */
     .s-label {
       font-size: 0.66rem;
       color: var(--cream2);
@@ -459,12 +456,10 @@
 
     .s-label::after { content:''; flex:1; height:1px; background: linear-gradient(90deg, var(--border), transparent); }
 
-    /* ── CATS ── */
     .cats { display: flex; flex-direction: column; gap: 5px; }
 
     .cat { border: 1px solid var(--border2); background: var(--panel); position: relative; }
 
-    /* left colour accent */
     .cat.d-m { border-left: 2px solid var(--c-line); }
     .cat.d-t { border-left: 2px solid var(--g-line); }
     .cat.d-l { border-left: 2px solid var(--amber); }
@@ -564,7 +559,6 @@
     .entry.soon { color: var(--cream2); opacity: 0.35; font-size: 0.88rem; }
     .entry.soon::before { content: '· '; }
 
-    /* ── POST VIEW ── */
     #post-view { display: none; }
 
     .back {
@@ -632,7 +626,6 @@
 
     .post-body em { color: var(--cream2); opacity: 0.55; font-style: italic; }
 
-    /* ── ABOUT / CONTACT ── */
     #about-view, #contact-view { display: none; }
 
     .s-title {
@@ -656,7 +649,6 @@
 
     .contact-email { color: var(--crt); text-decoration: none; }
 
-    /* ── FOOTER ── */
     footer {
       margin-top: 50px;
       padding: 10px 18px;
@@ -672,7 +664,6 @@
     footer .pn  { opacity: 0.7; color: var(--amber); }
     footer .fc  { display: flex; gap: 14px; }
 
-    /* ── RESPONSIVE ── */
     @media (max-width: 780px) {
       .intro { grid-template-columns: 1fr; }
       header { flex-direction: column; align-items: flex-start; }
@@ -686,7 +677,6 @@
 <body>
 <div class="wrap">
 
-  <!-- MISSION STATUS TICKER -->
   <div class="ticker-wrap">
     <div class="ticker-label">FLT LOG</div>
     <div class="ticker-track" id="ticker-inner">
@@ -707,7 +697,6 @@
     </div>
   </div>
 
-  <!-- TOP READOUT STRIP -->
   <div class="top-strip">
     <div class="strip-id">HARWELL · MAT-LAB · CONSOLE 01</div>
     <div class="readouts">
@@ -734,7 +723,6 @@
     </div>
   </div>
 
-  <!-- HEADER -->
   <header>
     <div>
       <div class="h-badge">FLIGHT LOG // MATERIALS ENGINEERING // HRW</div>
@@ -746,7 +734,6 @@
     </div>
   </header>
 
-  <!-- NAV -->
   <nav>
     <a id="nav-home"    onclick="go('home')"   ><span class="pn">P.100</span> Home</a>
     <a id="nav-notes"   onclick="go('home')"   ><span class="pn">P.101</span> Notes</a>
@@ -756,13 +743,11 @@
 
   <div class="content">
 
-    <!-- HOME VIEW -->
     <div id="home-view">
 
       <div class="intro">
         <div class="intro-left">
 
-          <!-- Intro panel -->
           <div class="mc-panel">
             <div class="mc-panel-head">
               <span class="mc-id">OPERATOR LOG // HARWELL</span>
@@ -777,7 +762,6 @@
             </div>
           </div>
 
-          <!-- System status grid -->
           <div class="mc-panel">
             <div class="mc-panel-head">
               <span class="mc-id">SYSTEM STATUS BOARD</span>
@@ -821,7 +805,6 @@
 
         </div>
 
-        <!-- ISS Monitor -->
         <div class="iss-monitor">
           <div class="iss-head">
             <span>TRACKING DISPLAY</span>
@@ -834,10 +817,10 @@
             <div class="ir"><span class="ir-lbl">ALT</span><span class="ir-val" id="iss-alt">--- km</span></div>
             <span class="iss-label">ISS<br>GROUND<br>TRACK</span>
           </div>
+          <div class="iss-credit">powered by orbitalradar.com</div>
         </div>
       </div>
 
-      <!-- BENCH -->
       <div class="bench mc-panel" style="margin-bottom:18px;">
         <div class="mc-panel-head">
           <span class="mc-id">▶ ACTIVE · ON MY BENCH</span>
@@ -913,9 +896,8 @@
         </div>
 
       </div>
-    </div><!-- /home-view -->
+    </div>
 
-    <!-- POST VIEW -->
     <div id="post-view">
       <a class="back" onclick="go('home')">◀ BACK / P.101</a>
       <div class="post-cat" id="pm"></div>
@@ -923,7 +905,6 @@
       <div class="post-body" id="pb"></div>
     </div>
 
-    <!-- ABOUT VIEW -->
     <div id="about-view">
       <a class="back" onclick="go('home')">◀ BACK / P.100</a>
       <div class="s-title">ABOUT</div>
@@ -938,7 +919,6 @@
       </div>
     </div>
 
-    <!-- CONTACT VIEW -->
     <div id="contact-view">
       <a class="back" onclick="go('home')">◀ BACK / P.100</a>
       <div class="s-title">CONTACT</div>
@@ -950,7 +930,7 @@
       </div>
     </div>
 
-  </div><!-- /content -->
+  </div>
 
   <footer>
     <span>MOSTLY NOMINAL // HRW MAT-LAB</span>
@@ -960,7 +940,7 @@
     </div>
   </footer>
 
-</div><!-- /wrap -->
+</div>
 
 <script>
   const posts = {
@@ -1021,7 +1001,6 @@
     return false;
   }
 
-  // ── ISS MAP ──
   const MAP_W = 300, MAP_H = 200;
 
   const lands = [
@@ -1040,16 +1019,10 @@
     return [(lon + 180) / 360 * MAP_W, (90 - lat) / 180 * MAP_H];
   }
 
-  function drawISS(lat, lon) {
-    const canvas = document.getElementById('iss-map');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-
-    // deep space background
+  function drawBaseMap(ctx) {
     ctx.fillStyle = '#030503';
     ctx.fillRect(0, 0, MAP_W, MAP_H);
 
-    // grid lines
     ctx.strokeStyle = '#0c160c';
     ctx.lineWidth = 0.5;
     for (let lo = -180; lo <= 180; lo += 30) {
@@ -1061,7 +1034,6 @@
       ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(MAP_W, y); ctx.stroke();
     }
 
-    // landmasses
     lands.forEach(pts => {
       ctx.beginPath();
       pts.forEach(([lo, la], i) => {
@@ -1075,74 +1047,146 @@
       ctx.lineWidth = 0.8;
       ctx.stroke();
     });
-
-    // orbital track
-    const incl = 51.6 * Math.PI / 180;
-    const T = 92.68, n = 360 / T, we = 360 / 1440;
-    const latR = lat * Math.PI / 180;
-    const sinT0 = Math.sin(latR) / Math.sin(incl);
-    let theta0 = Math.asin(Math.max(-1, Math.min(1, sinT0))) * 180 / Math.PI;
-
-    [[-T * 0.8, 0, 0.18], [0, T * 1.8, 0.65]].forEach(([dtStart, dtEnd, alpha]) => {
-      let started = false, prevLon = null;
-      const steps = 180;
-      const dtRange = dtEnd - dtStart;
-      ctx.beginPath();
-      for (let k = 0; k <= steps; k++) {
-        const dt = dtStart + (dtRange * k / steps);
-        const theta = theta0 + n * dt;
-        const la = Math.asin(Math.sin(incl) * Math.sin(theta * Math.PI / 180)) * 180 / Math.PI;
-        let lo = lon + (theta - theta0) * Math.cos(incl) - we * dt;
-        while (lo > 180) lo -= 360;
-        while (lo < -180) lo += 360;
-        const [x, y] = toXY(lo, la);
-        if (prevLon !== null && Math.abs(lo - prevLon) > 180) {
-          ctx.strokeStyle = `rgba(255,130,40,${alpha})`;
-          ctx.lineWidth = 1.0;
-          ctx.stroke();
-          ctx.beginPath();
-          started = false;
-        }
-        started ? ctx.lineTo(x, y) : (ctx.moveTo(x, y), started = true);
-        prevLon = lo;
-      }
-      ctx.strokeStyle = `rgba(255,130,40,${alpha})`;
-      ctx.lineWidth = 1.0;
-      ctx.stroke();
-    });
-
-    // ISS position
-    const [ix, iy] = toXY(lon, lat);
-    ctx.beginPath(); ctx.arc(ix, iy, 10, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(255,130,40,0.07)'; ctx.fill();
-    ctx.strokeStyle = 'rgba(255,130,40,0.5)'; ctx.lineWidth = 0.5;
-    ctx.beginPath(); ctx.moveTo(ix - 12, iy); ctx.lineTo(ix + 12, iy); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(ix, iy - 12); ctx.lineTo(ix, iy + 12); ctx.stroke();
-    ctx.beginPath(); ctx.arc(ix, iy, 2.5, 0, Math.PI * 2);
-    ctx.fillStyle = '#ff8028'; ctx.fill();
   }
 
-  async function fetchISS() {
+  let issSatrec = null;
+  let lastTleFetch = 0;
+
+  async function loadISSTLE() {
+    const res = await fetch('https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE');
+    const text = (await res.text()).trim();
+    const lines = text.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+
+    let line1 = null, line2 = null;
+    for (const line of lines) {
+      if (line.startsWith('1 ')) line1 = line;
+      if (line.startsWith('2 ')) line2 = line;
+    }
+
+    if (!line1 || !line2) throw new Error('TLE parse failed');
+
+    issSatrec = satellite.twoline2satrec(line1, line2);
+    lastTleFetch = Date.now();
+  }
+
+  function propagateToLatLonAlt(date) {
+    if (!issSatrec) return null;
+
+    const pv = satellite.propagate(issSatrec, date);
+    if (!pv.position) return null;
+
+    const gmst = satellite.gstime(date);
+    const gd = satellite.eciToGeodetic(pv.position, gmst);
+
+    return {
+      lat: satellite.degreesLat(gd.latitude),
+      lon: satellite.degreesLong(gd.longitude),
+      alt: gd.height
+    };
+  }
+
+  function buildTrackPoints(now, minutesBefore, minutesAfter, stepSeconds) {
+    const points = [];
+    const startMs = now.getTime() - minutesBefore * 60 * 1000;
+    const endMs   = now.getTime() + minutesAfter * 60 * 1000;
+
+    for (let t = startMs; t <= endMs; t += stepSeconds * 1000) {
+      const p = propagateToLatLonAlt(new Date(t));
+      if (p) points.push(p);
+    }
+    return points;
+  }
+
+  function splitDateline(points) {
+    const segments = [];
+    let current = [];
+
+    for (let i = 0; i < points.length; i++) {
+      if (i > 0 && Math.abs(points[i].lon - points[i - 1].lon) > 180) {
+        if (current.length) segments.push(current);
+        current = [];
+      }
+      current.push(points[i]);
+    }
+    if (current.length) segments.push(current);
+    return segments;
+  }
+
+  function drawSegments(ctx, segments, alpha, width) {
+    segments.forEach(seg => {
+      if (seg.length < 2) return;
+      ctx.beginPath();
+      seg.forEach((p, i) => {
+        const [x, y] = toXY(p.lon, p.lat);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      });
+      ctx.strokeStyle = `rgba(255,130,40,${alpha})`;
+      ctx.lineWidth = width;
+      ctx.stroke();
+    });
+  }
+
+  function drawISS(lat, lon, trackPoints, currentIndex) {
+    const canvas = document.getElementById('iss-map');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    drawBaseMap(ctx);
+
+    if (trackPoints && trackPoints.length > 1) {
+      const past = trackPoints.slice(0, currentIndex + 1);
+      const future = trackPoints.slice(currentIndex);
+
+      drawSegments(ctx, splitDateline(past), 0.18, 1.0);
+      drawSegments(ctx, splitDateline(future), 0.65, 1.0);
+    }
+
+    const [ix, iy] = toXY(lon, lat);
+    ctx.beginPath(); ctx.arc(ix, iy, 10, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,130,40,0.07)';
+    ctx.fill();
+
+    ctx.strokeStyle = 'rgba(255,130,40,0.5)';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath(); ctx.moveTo(ix - 12, iy); ctx.lineTo(ix + 12, iy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(ix, iy - 12); ctx.lineTo(ix, iy + 12); ctx.stroke();
+
+    ctx.beginPath(); ctx.arc(ix, iy, 2.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#ff8028';
+    ctx.fill();
+  }
+
+  async function updateISS() {
     try {
-      const r = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
-      const d = await r.json();
-      const lat = d.latitude, lon = d.longitude, alt = Math.round(d.altitude);
-      document.getElementById('iss-lat').textContent = lat.toFixed(1) + '°';
-      document.getElementById('iss-lon').textContent = lon.toFixed(1) + '°';
-      document.getElementById('iss-alt').textContent = alt + ' km';
-      drawISS(lat, lon);
-    } catch(e) {
-      drawISS(0, 0);
+      if (!issSatrec || (Date.now() - lastTleFetch) > 6 * 60 * 60 * 1000) {
+        await loadISSTLE();
+      }
+
+      const now = new Date();
+      const current = propagateToLatLonAlt(now);
+      if (!current) throw new Error('Propagation failed');
+
+      document.getElementById('iss-lat').textContent = current.lat.toFixed(1) + '°';
+      document.getElementById('iss-lon').textContent = current.lon.toFixed(1) + '°';
+      document.getElementById('iss-alt').textContent = Math.round(current.alt) + ' km';
+
+      const minutesBefore = 75;
+      const minutesAfter = 110;
+      const stepSeconds = 30;
+
+      const trackPoints = buildTrackPoints(now, minutesBefore, minutesAfter, stepSeconds);
+      const currentIndex = Math.floor((minutesBefore * 60) / stepSeconds);
+
+      drawISS(current.lat, current.lon, trackPoints, currentIndex);
+    } catch (e) {
+      const canvas = document.getElementById('iss-map');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        drawBaseMap(ctx);
+      }
     }
   }
 
-  window.addEventListener('load', () => {
-    drawISS(51, 0);
-    fetchISS();
-    setInterval(fetchISS, 5000);
-  });
-
-  // Clock
   const t0 = Date.now();
   function tick() {
     const n = new Date();
@@ -1157,9 +1201,14 @@
       String(e % 60).padStart(2,'0');
   }
 
-  setInterval(tick, 1000);
-  tick();
-  go('home');
+  window.addEventListener('load', async () => {
+    drawBaseMap(document.getElementById('iss-map').getContext('2d'));
+    tick();
+    go('home');
+    await updateISS();
+    setInterval(tick, 1000);
+    setInterval(updateISS, 5000);
+  });
 </script>
 </body>
 </html>
