@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ARTICLE TITLE — Mostly Nominal</title>
-  <meta name="description" content="Short description of the article.">
+  <meta name="description" content="Short description of the article for search engines.">
   <meta name="robots" content="index, follow">
   <meta property="og:title" content="ARTICLE TITLE — Mostly Nominal">
   <meta property="og:description" content="Short description of the article.">
@@ -14,53 +14,127 @@
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
-  <div class="wrap article-wrap">
-    <div class="top-strip">
-      <div class="strip-id">HARWELL · MAT-LAB · ARTICLE VIEW</div>
+<div class="wrap">
+
+  <!-- ══ TICKER — edit the spans to match the article topic ══ -->
+  <div class="ticker-wrap">
+    <div class="ticker-label">FLT LOG</div>
+    <div class="ticker-track">
+      <span>CONSOLE 01 · HARWELL MAT-LAB</span><span class="sep">///</span>
+      <span>CATEGORY // YEAR</span><span class="sep">///</span>
+      <span>ARTICLE TITLE</span><span class="sep">///</span>
+      <span>STATUS: NOMINAL</span><span class="sep">///</span>
+      <span>CONSOLE 01 · HARWELL MAT-LAB</span><span class="sep">///</span>
+      <span>CATEGORY // YEAR</span><span class="sep">///</span>
+      <span>ARTICLE TITLE</span><span class="sep">///</span>
+      <span>STATUS: NOMINAL</span><span class="sep">///</span>
     </div>
+  </div>
 
-    <header>
-      <div class="h-badge">CATEGORY // YEAR</div>
-      <h1>Mostly Nominal</h1>
-    </header>
-
-    <div class="content">
-      <a class="back" href="../index.html">◀ BACK / INDEX</a>
-
-      <div class="post-shell">
-        <div class="post-head">
-          <span class="post-meta">CATEGORY // YEAR</span>
-          <span class="post-state">STATUS : NOMINAL</span>
-        </div>
-
-        <div class="post-body-wrap">
-          <div class="post-title">ARTICLE TITLE</div>
-
-          <div class="post-body">
-            <p>Opening paragraph goes here. Use this first paragraph to explain what the note is about and why it matters.</p>
-
-            <h3>Context</h3>
-            <p>Write the background here. This can be the material, experiment, issue, or reason for the investigation.</p>
-
-            <h3>Setup</h3>
-            <p>Describe the setup, conditions, equipment, or method here.</p>
-
-            <h3>Observed</h3>
-            <p>Describe what you observed, measured, or concluded.</p>
-
-            <h3>Notes</h3>
-            <p>Add useful comments, annoyances, lessons learned, or follow-up actions.</p>
-
-            <p><em>— status: mostly nominal</em></p>
-          </div>
-        </div>
+  <!-- ══ TOP STRIP ══ -->
+  <div class="top-strip">
+    <div class="strip-id">HARWELL · MAT-LAB · ARTICLE VIEW</div>
+    <div class="readouts">
+      <div class="r-cell">
+        <span class="r-lbl">UTC</span>
+        <span class="r-val" id="clk">--:--:--</span>
+      </div>
+      <div class="r-cell">
+        <span class="r-lbl">CAT</span>
+        <!-- Change to: MAT / TEST / LAB / FAIL -->
+        <span class="r-val c">MAT</span>
+      </div>
+      <div class="r-cell">
+        <span class="r-lbl">YEAR</span>
+        <span class="r-val a">2026</span>
+      </div>
+      <div class="r-cell">
+        <span class="r-lbl">STATUS</span>
+        <span class="r-val g"><span class="blink">█</span> NOM</span>
       </div>
     </div>
-
-    <footer>
-      <span>MOSTLY NOMINAL // HRW MAT-LAB</span>
-      <span>ARTICLE VIEW</span>
-    </footer>
   </div>
+
+  <!-- ══ HEADER ══ -->
+  <header>
+    <div>
+      <!-- Change h-badge to match the category of this article -->
+      <div class="h-badge">MATERIALS ENGINEERING // 2026 // HRW</div>
+      <h1>Mostly Nominal</h1>
+    </div>
+    <div class="h-right">
+      <div class="stat">status : mostly nominal</div>
+      <div class="sub">article view</div>
+    </div>
+  </header>
+
+  <!-- ══ NAV — links back to index ══ -->
+  <nav>
+    <a href="../index.html"><span class="pn">P.100</span> Home</a>
+    <a href="../index.html"><span class="pn">P.101</span> Notes</a>
+    <a href="../index.html#about"><span class="pn">P.102</span> About</a>
+    <a href="../index.html#contact"><span class="pn">P.103</span> Contact</a>
+  </nav>
+
+  <!-- ══ ARTICLE CONTENT ══ -->
+  <div class="content">
+    <a class="back" href="../index.html">◀ BACK / FLIGHT LOG</a>
+
+    <!-- Category label — change to match -->
+    <div class="post-cat">MATERIALS ENGINEERING // 2026</div>
+
+    <!-- Article title — change to match -->
+    <div class="post-title">ARTICLE TITLE</div>
+
+    <div class="post-body">
+
+      <p>Opening paragraph. What is this note about and why does it matter?</p>
+
+      <h3>Context</h3>
+      <p>Background: the material, experiment, issue, or reason for this investigation.</p>
+
+      <h3>Setup</h3>
+      <p>Conditions, equipment, method. Include key parameters inline: <code>0.5 M H₂SO₄</code>.</p>
+
+      <!-- Image example — remove if not needed -->
+      <!--
+      <figure class="fig">
+        <img src="../assets/img/FOLDER/fig1-description.jpg" alt="Description of image" />
+        <figcaption>Fig. 1 — Caption text here.</figcaption>
+      </figure>
+      -->
+
+      <h3>Observed</h3>
+      <p>What you saw, measured, or concluded.</p>
+
+      <h3>Notes</h3>
+      <p>Useful comments, annoyances, lessons, or follow-up items.</p>
+
+      <p><em>— status: mostly nominal</em></p>
+
+    </div><!-- /.post-body -->
+  </div><!-- /.content -->
+
+  <footer>
+    <span>MOSTLY NOMINAL // HRW MAT-LAB</span>
+    <div class="fc">
+      <span>SYS: <span style="color:var(--g-line)">NOM</span></span>
+      <span class="pn">P.101</span>
+    </div>
+  </footer>
+
+</div><!-- /.wrap -->
+
+<script>
+  /* UTC clock */
+  function tick() {
+    const n = new Date();
+    const pad = v => String(v).padStart(2,'0');
+    const el = document.getElementById('clk');
+    if (el) el.textContent = pad(n.getUTCHours())+':'+pad(n.getUTCMinutes())+':'+pad(n.getUTCSeconds());
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
 </body>
 </html>
