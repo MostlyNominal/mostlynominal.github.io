@@ -14,6 +14,139 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/satellite.js@5.0.0/dist/satellite.min.js"></script>
+  <style>
+    /* sadece index'e özel ek stiller */
+    .home-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .home-main {
+      min-width: 0;
+    }
+
+    .home-side {
+      min-width: 0;
+    }
+
+    .iss-monitor {
+      background: #040704;
+      border: 1px solid var(--olive2);
+      border-top: 2px solid var(--border2);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .iss-monitor::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.7);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .iss-head {
+      background: #070d07;
+      border-bottom: 1px solid var(--border);
+      color: var(--amber);
+      font-size: 0.54rem;
+      letter-spacing: 3px;
+      padding: 6px 9px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .iss-head-right {
+      font-size: 0.44rem;
+      color: var(--cream2);
+      opacity: 0.4;
+      letter-spacing: 2px;
+    }
+
+    .iss-monitor canvas {
+      display: block;
+      width: 100%;
+      position: relative;
+      z-index: 0;
+    }
+
+    .iss-readout {
+      background: #030603;
+      border-top: 1px solid var(--border);
+      padding: 6px 9px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .iss-readout .ir {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .iss-readout .ir-lbl {
+      font-size: 0.38rem;
+      color: var(--cream2);
+      opacity: 0.4;
+      letter-spacing: 2px;
+    }
+
+    .iss-readout .ir-val {
+      font-size: 0.7rem;
+      color: #ff8028;
+      letter-spacing: 1px;
+    }
+
+    .iss-label {
+      font-size: 0.38rem;
+      color: var(--cream2);
+      opacity: 0.3;
+      letter-spacing: 2px;
+      text-align: right;
+    }
+
+    .iss-credit {
+      background: #020402;
+      border-top: 1px solid rgba(34,48,32,0.65);
+      padding: 4px 9px 5px;
+      font-size: 0.34rem;
+      letter-spacing: 1.5px;
+      color: var(--cream2);
+      opacity: 0.42;
+      text-align: right;
+      position: relative;
+      z-index: 2;
+    }
+
+    .entry-link {
+      color: var(--cream2);
+      text-decoration: none;
+      transition: color 0.1s;
+    }
+
+    .entry-link:hover {
+      color: var(--cream);
+    }
+
+    .entry-link::before {
+      content: '→ ';
+      color: var(--amber2);
+    }
+
+    @media (max-width: 900px) {
+      .home-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="wrap">
@@ -27,11 +160,9 @@
     </header>
 
     <div class="content">
-
       <div class="home-grid">
 
         <div class="home-main">
-
           <div class="post-shell" style="margin-bottom: 18px;">
             <div class="post-head">
               <span class="post-meta">OPERATOR LOG</span>
@@ -55,9 +186,7 @@
             <div class="post-body-wrap">
               <div class="post-title">Materials Engineering</div>
               <div class="post-body">
-                <p>
-                  <a href="articles/ss430-dl-epr.html">→ SS430 sensitisation via DL-EPR</a>
-                </p>
+                <p><a class="entry-link" href="articles/ss430-dl-epr.html">SS430 sensitisation via DL-EPR</a></p>
               </div>
             </div>
           </div>
@@ -123,11 +252,10 @@
             <div class="post-body-wrap">
               <div class="post-title">Contact</div>
               <div class="post-body">
-                <p>You can reach me at <a href="mailto:MAIL@MAIL">MAIL</a>.</p>
+                <p>You can reach me at <a href="mailto:ince.deniz@laposte.net">ince.deniz@laposte.net</a>.</p>
               </div>
             </div>
           </div>
-
         </div>
 
         <aside class="home-side">
