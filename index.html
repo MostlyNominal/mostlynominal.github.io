@@ -21,7 +21,7 @@
 </head>
 <body>
 <div class="wrap">
- 
+
   <div class="ticker-wrap">
     <div class="ticker-label">FLT LOG</div>
     <div class="ticker-track">
@@ -41,7 +41,7 @@
       <span>NEXT ENTRY: TBD</span><span class="sep">///</span>
     </div>
   </div>
- 
+
   <div class="top-strip">
     <div class="strip-id">HARWELL · MAT-LAB · CONSOLE 01</div>
     <div class="readouts">
@@ -52,6 +52,10 @@
       <div class="r-cell">
         <span class="r-lbl">UTC</span>
         <span class="r-val" id="clk">--:--:--</span>
+      </div>
+      <div class="r-cell">
+        <span class="r-lbl">DATE</span>
+        <span class="r-val c" id="datestamp">---- -- --</span>
       </div>
       <div class="r-cell">
         <span class="r-lbl">LOC</span>
@@ -67,7 +71,7 @@
       </div>
     </div>
   </div>
- 
+
   <header>
     <div>
       <div class="h-badge">FLIGHT LOG // MATERIALS ENGINEERING // HRW</div>
@@ -78,16 +82,16 @@
       <div class="sub">last check : today · all systems go</div>
     </div>
   </header>
- 
+
   <nav>
     <a id="nav-home"    href="#"         onclick="go('home');    return false;"><span class="pn">P.100</span> Home</a>
     <a id="nav-notes"   href="#"         onclick="go('home');    return false;"><span class="pn">P.101</span> Notes</a>
     <a id="nav-about"   href="#about"    onclick="go('about');   return false;"><span class="pn">P.102</span> About</a>
     <a id="nav-contact" href="#contact"  onclick="go('contact'); return false;"><span class="pn">P.103</span> Contact</a>
   </nav>
- 
+
   <div class="content">
- 
+
     <!-- ── HOME VIEW ── -->
     <div id="home-view">
       <div class="intro">
@@ -137,7 +141,7 @@
           <div class="iss-credit">powered by orbitalradar.com</div>
         </div>
       </div>
- 
+
       <div class="bench mc-panel" style="margin-bottom:18px;">
         <div class="mc-panel-head">
           <span class="mc-id">▶ ACTIVE · ON MY BENCH</span>
@@ -149,12 +153,12 @@
              To be continued.</p>
         </div>
       </div>
- 
+
       <div class="s-label">
         <span class="tag">FLIGHT LOG</span>
         /home/notes
       </div>
- 
+
       <div class="cats">
         <div class="cat d-m open">
           <div class="cat-toggle" onclick="tog(this.parentElement)">
@@ -171,7 +175,7 @@
             </div>
           </div>
         </div>
- 
+
         <div class="cat d-t">
           <div class="cat-toggle" onclick="tog(this.parentElement)">
             <span class="cat-arr">▶</span>
@@ -184,7 +188,7 @@
             <div class="entry soon">Décollage</div>
           </div>
         </div>
- 
+
         <div class="cat d-l">
           <div class="cat-toggle" onclick="tog(this.parentElement)">
             <span class="cat-arr">▶</span>
@@ -197,7 +201,7 @@
             <div class="entry soon">Décollage</div>
           </div>
         </div>
- 
+
         <div class="cat d-f">
           <div class="cat-toggle" onclick="tog(this.parentElement)">
             <span class="cat-arr">▶</span>
@@ -212,7 +216,7 @@
         </div>
       </div>
     </div><!-- /#home-view -->
- 
+
     <!-- ── ABOUT VIEW ── -->
     <div id="about-view">
       <a class="back" href="#" onclick="go('home'); return false;">◀ BACK / P.100</a>
@@ -227,7 +231,7 @@
            on a DL-EPR curve that looked completely wrong.</p>
       </div>
     </div>
- 
+
     <!-- ── CONTACT VIEW ── -->
     <div id="contact-view">
       <a class="back" href="#" onclick="go('home'); return false;">◀ BACK / P.100</a>
@@ -239,23 +243,24 @@
            or commiserate about lab equipment.</p>
       </div>
     </div>
- 
+
   </div><!-- /.content -->
- 
+
   <footer>
     <span>MOSTLY NOMINAL // HRW MAT-LAB</span>
     <div class="fc">
+      <span id="footer-ts">----·--·-- --:--Z</span>
       <span>SYS: <span style="color:var(--g-line)">NOM</span></span>
       <span class="pn" id="pnum">P.100</span>
     </div>
   </footer>
- 
+
 </div><!-- /.wrap -->
- 
+
 <script>
   /* ── SPA routing ── */
   const pages = { home:'P.100', about:'P.102', contact:'P.103' };
- 
+
   function go(name) {
     ['home','about','contact'].forEach(v =>
       document.getElementById(v + '-view').style.display = 'none');
@@ -274,9 +279,9 @@
     document.getElementById('pnum').textContent = pages[name] || 'P.100';
     window.scrollTo(0, 0);
   }
- 
+
   function tog(card) { card.classList.toggle('open'); }
- 
+
   /* ── ISS tracker ── */
   const MAP_W = 300, MAP_H = 200;
   const lands = [
@@ -290,7 +295,7 @@
     [[-6,50],[2,51],[2,58],[-4,58],[-6,50]],
     [[130,31],[132,34],[135,35],[142,45],[141,43],[135,34],[130,31]],
   ];
- 
+
   function toXY(lon, lat) {
     return [(lon + 180) / 360 * MAP_W, (90 - lat) / 180 * MAP_H];
   }
@@ -317,10 +322,9 @@
       ctx.strokeStyle = '#1e3820'; ctx.lineWidth = 0.8; ctx.stroke();
     });
   }
- 
+
   let issSatrec = null, lastTleFetch = 0;
   async function loadISSTLE() {
-    // tle.ivanstanojevic.me has CORS enabled — Celestrak blocks browser requests
     const res = await fetch('https://tle.ivanstanojevic.me/api/tle/25544');
     if (!res.ok) throw new Error('TLE fetch failed: ' + res.status);
     const data = await res.json();
@@ -379,7 +383,6 @@
   }
   async function updateISS() {
     try {
-      // PRIMARY: full ground track via TLE + satellite.js
       if (!issSatrec || (Date.now()-lastTleFetch) > 6*60*60*1000) await loadISSTLE();
       const now = new Date();
       const cur = propagateToLatLonAlt(now);
@@ -390,7 +393,6 @@
       const trackPoints = buildTrackPoints(now, 75, 110, 30);
       drawISS(cur.lat, cur.lon, trackPoints, Math.floor(75*60/30));
     } catch(e) {
-      // FALLBACK: current position only via wheretheiss.at (no ground track)
       try {
         const res = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
         const d = await res.json();
@@ -404,23 +406,32 @@
       }
     }
   }
- 
+
   /* ── Clock ── */
   const t0 = Date.now();
   function tick() {
     const n = new Date();
     const pad = v => String(v).padStart(2,'0');
-    document.getElementById('clk').textContent = pad(n.getUTCHours())+':'+pad(n.getUTCMinutes())+':'+pad(n.getUTCSeconds());
+    const hh = pad(n.getUTCHours());
+    const mm = pad(n.getUTCMinutes());
+    const ss = pad(n.getUTCSeconds());
+    const yr = n.getUTCFullYear();
+    const mo = pad(n.getUTCMonth() + 1);
+    const dy = pad(n.getUTCDate());
+
+    document.getElementById('clk').textContent = hh+':'+mm+':'+ss;
+    document.getElementById('datestamp').textContent = yr+'·'+mo+'·'+dy;
+    document.getElementById('footer-ts').textContent = yr+'·'+mo+'·'+dy+' '+hh+':'+mm+'Z';
+
     const e = Math.floor((Date.now()-t0)/1000);
     document.getElementById('met').textContent = 'T+'+pad(Math.floor(e/3600))+':'+pad(Math.floor((e%3600)/60))+':'+pad(e%60);
   }
- 
+
   /* ── Init ── */
   window.addEventListener('load', async () => {
     const canvas = document.getElementById('iss-map');
     if (canvas) drawBaseMap(canvas.getContext('2d'));
     tick();
-    // hash routing: support links back from article pages
     const hash = window.location.hash.slice(1);
     if (hash === 'about' || hash === 'contact') go(hash);
     else go('home');
