@@ -4,10 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SS430 Sensitisation via DL-EPR — Mostly Nominal</title>
-  <meta name="description" content="DL-EPR measurements on ferritic stainless SS430 — setup, observations, and notes on surface prep.">
+  <meta name="description" content="Double-loop electrochemical potentiokinetic reactivation testing on ferritic stainless steel SS430. Sensitisation study, surface prep observations, and anomalous curve behaviour.">
   <meta name="robots" content="index, follow">
   <meta property="og:title" content="SS430 Sensitisation via DL-EPR — Mostly Nominal">
-  <meta property="og:description" content="DL-EPR measurements on ferritic stainless SS430 — setup, observations, and notes on surface prep.">
   <meta property="og:type" content="article">
   <link rel="icon" type="image/png" href="../favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
@@ -20,39 +19,43 @@
     <div class="ticker-label">FLT LOG</div>
     <div class="ticker-track">
       <span>CONSOLE 01 · HARWELL MAT-LAB</span><span class="sep">///</span>
-      <span>MATERIALS ENGINEERING // 2026</span><span class="sep">///</span>
-      <span>SS430 SENSITISATION · DL-EPR</span><span class="sep">///</span>
+      <span>ACTIVE EXPERIMENT: DL-EPR FERRITIC SS430</span><span class="sep">///</span>
+      <span>SENSITISATION STUDY · IN PROGRESS</span><span class="sep">///</span>
       <span>0.5M H₂SO₄ + 0.01M KSCN · RT</span><span class="sep">///</span>
-      <span>STATUS: NOMINAL</span><span class="sep">///</span>
+      <span>SYS STATUS: NOMINAL</span><span class="sep">///</span>
       <span>CONSOLE 01 · HARWELL MAT-LAB</span><span class="sep">///</span>
-      <span>MATERIALS ENGINEERING // 2026</span><span class="sep">///</span>
-      <span>SS430 SENSITISATION · DL-EPR</span><span class="sep">///</span>
+      <span>ACTIVE EXPERIMENT: DL-EPR FERRITIC SS430</span><span class="sep">///</span>
+      <span>SENSITISATION STUDY · IN PROGRESS</span><span class="sep">///</span>
       <span>0.5M H₂SO₄ + 0.01M KSCN · RT</span><span class="sep">///</span>
-      <span>STATUS: NOMINAL</span><span class="sep">///</span>
+      <span>SYS STATUS: NOMINAL</span><span class="sep">///</span>
     </div>
   </div>
 
   <div class="top-strip">
-    <div class="strip-id">HARWELL · MAT-LAB · ARTICLE VIEW</div>
+    <div class="strip-id">HARWELL · MAT-LAB · CONSOLE 01</div>
     <div class="readouts">
+      <div class="r-cell">
+        <span class="r-lbl">MET</span>
+        <span class="r-val g" id="met">T+00:00:00</span>
+      </div>
       <div class="r-cell">
         <span class="r-lbl">UTC</span>
         <span class="r-val" id="clk">--:--:--</span>
       </div>
       <div class="r-cell">
+        <span class="r-lbl">DATE</span>
+        <span class="r-val c" id="datestamp">---- -- --</span>
+      </div>
+      <div class="r-cell">
+        <span class="r-lbl">LOC</span>
+        <span class="r-val c">HRW 51°34'N 1°18'W</span>
+      </div>
+      <div class="r-cell">
         <span class="r-lbl">CAT</span>
-        <span class="r-val c">MAT</span>
+        <span class="r-val c">MAT ENG</span>
       </div>
       <div class="r-cell">
-        <span class="r-lbl">YEAR</span>
-        <span class="r-val a">2026</span>
-      </div>
-      <div class="r-cell">
-        <span class="r-lbl">GRADE</span>
-        <span class="r-val c">SS430</span>
-      </div>
-      <div class="r-cell">
-        <span class="r-lbl">STATUS</span>
+        <span class="r-lbl">SYS</span>
         <span class="r-val g"><span class="blink">█</span> NOM</span>
       </div>
     </div>
@@ -60,12 +63,12 @@
 
   <header>
     <div>
-      <div class="h-badge">MATERIALS ENGINEERING // 2026 // HRW</div>
+      <div class="h-badge">FLIGHT LOG // MATERIALS ENGINEERING // HRW</div>
       <h1>Mostly Nominal</h1>
     </div>
     <div class="h-right">
       <div class="stat">status : mostly nominal</div>
-      <div class="sub">article view</div>
+      <div class="sub">last check : today · all systems go</div>
     </div>
   </header>
 
@@ -77,77 +80,102 @@
   </nav>
 
   <div class="content">
-    <a class="back" href="../index.html">◀ BACK / FLIGHT LOG</a>
 
-    <div class="post-cat">MATERIALS ENGINEERING // 2026</div>
-    <div class="post-title">SS430 sensitisation via DL-EPR</div>
+    <a class="back" href="../index.html">◀ BACK / P.100</a>
+
+    <div class="post-cat">MATERIALS ENGINEERING · 2026</div>
+    <div class="post-title">SS430 Sensitisation via DL-EPR</div>
 
     <div class="post-body">
 
-      <p>Double Loop Electrochemical Potentiokinetic Reactivation (DL-EPR) is one of the
-      cleaner ways to quantify sensitisation in stainless steels without destroying the sample.
-      SS430 — a ferritic grade — has thinner literature than 304/316, which makes it
-      slightly more interesting to work with.</p>
+      <p>Double-loop electrochemical potentiokinetic reactivation — DL-EPR — is one of the cleaner
+         ways to quantify sensitisation in stainless steels without sectioning. You scan anodic,
+         hold, then scan back cathodic. The ratio of reactivation peak current (<code>Ir</code>)
+         to activation peak current (<code>Ia</code>) gives you a sensitisation degree.
+         Simple in principle. Less simple in practice.</p>
 
-      <h3>Context</h3>
-      <p>Sensitisation in ferritic grades occurs at different temperature ranges compared
-      to austenitic steels. Chromium carbide and nitride precipitation at grain boundaries
-      depletes the adjacent matrix — but the kinetics are faster and the recovery behaviour
-      is different. DL-EPR catches this by measuring the ratio of the reactivation current
-      to the activation current (<code>Ir/Ia</code>). Higher ratio = more sensitised.</p>
+      <h3>Material and condition</h3>
 
-      <h3>Setup</h3>
-      <p>Standard electrolyte: <code>0.5 M H₂SO₄ + 0.01 M KSCN</code>, room temperature.
-      Scan rate: <code>1.667 mV/s</code>. Potential sweep from <code>−500 mV vs SCE</code>
-      to <code>+200 mV</code>, then reversed back to start.</p>
-      <p>Specimens were heat-treated in two conditions before testing:</p>
-      <p>· ~600 °C / 2 h — borderline sensitisation range<br>
-         · 750 °C / 2 h — expected higher sensitisation</p>
-      <p>Surface preparation: ground to 1200 grit, finished with 1 µm diamond suspension.
-      Rinsed with ethanol, dried in air. Mounted face-down in the cell immediately.</p>
+      <p>Grade SS430. Ferritic. 17 wt% Cr, no intentional stabilisation. Supplied as sheet,
+         cold-rolled. Two conditions tested: as-received, and sensitised by isothermal anneal
+         at 700 °C / 1 h followed by air cool. The anneal puts you squarely in the sensitisation
+         window for ferritic grades — carbide and nitride precipitation at grain boundaries,
+         chromium depletion around them.</p>
 
-      <h3>Observed</h3>
-      <p>Reactivation peak in SS430 is sharper and narrower than in austenitic grades —
-      the loop closes faster. This seems consistent with the faster diffusion kinetics
-      in the ferritic matrix.</p>
-      <p>At ~600 °C / 2 h: <code>Ir/Ia</code> below 0.05 — borderline. Hard to call
-      definitively sensitised at this condition.</p>
-      <p>At 750 °C / 2 h: jumped to ~0.18. Much more convincing. Grain boundary attack
-      visible in post-test optical inspection.</p>
+      <h3>Test setup</h3>
 
-      <h3>Notes</h3>
-      <p>Residual grinding marks from coarser grit gave irreproducible loops on early runs —
-      probably preferential attack at surface defects inflating the reactivation peak.
-      Always finish with 1 µm diamond. This is not optional.</p>
-      <p>KSCN concentration is sensitive. Weigh it properly — a small error shifts the
-      reactivation peak shape noticeably. Mixed 1 L batches, used within 48 h.</p>
-      <p>The 600 °C condition needs more repeat runs. Three specimens, two outliers.
-      Suspect surface prep variability. To be continued.</p>
+      <p>Electrolyte: <code>0.5 M H₂SO₄ + 0.01 M KSCN</code> at room temperature. KSCN
+         suppresses repassivation on the reverse scan, which sharpens the reactivation peak
+         and improves sensitivity. Three-electrode cell: working electrode (sample), Ag/AgCl
+         reference, Pt counter. Scan rate: 1.67 mV/s. Activation scan from −0.6 V to +0.3 V
+         vs. OCP; reactivation scan back to −0.6 V.</p>
 
-      <p><em>— status: mostly nominal</em></p>
+      <p>Surface prep: SiC grind to 1200 grit, finish with 1 µm diamond suspension,
+         degrease with acetone and IPA, dry under N₂. Masked with lacquer to expose
+         a defined area — nominally 1 cm².</p>
 
-    </div>
-  </div>
+      <h3>What happened</h3>
+
+      <p>The sensitised sample gave a clear reactivation peak as expected. The as-received
+         sample — theoretically not sensitised — also showed a small but repeatable
+         reactivation peak. <code>Ir/Ia</code> around 0.04. Low, but non-zero. Three repeats,
+         same result. Not noise.</p>
+
+      <p>Two possibilities. First: the as-received material already has some degree of
+         sensitisation from the rolling and any thermal history in processing. Ferritic grades
+         sensitise faster than austenitics and at lower temperatures — you don't need much.
+         Second: surface prep artefact. If the diamond polishing step isn't fully removing
+         the deformed layer from grinding, you can get anomalous current contributions on
+         the reverse scan.</p>
+
+      <p>Ran a quick check — electropolished one sample instead of mechanical polish.
+         Reactivation peak dropped. Not eliminated, but dropped. So probably both factors
+         contributing.</p>
+
+      <h3>Where this is going</h3>
+
+      <p>Need to rerun with electropolished surfaces as standard. Also want to try a shorter
+         anneal — 30 min at 700 °C — to see if I can capture an intermediate sensitisation
+         degree and get a better calibration of the <code>Ir/Ia</code> scale for this
+         specific material lot. The KSCN concentration might also be worth varying; some
+         literature suggests 0.005 M gives better peak resolution for ferritics.</p>
+
+      <p>Mostly nominal. Curve is behaving. Just need to understand what it's actually
+         telling me before I trust it.</p>
+
+    </div><!-- /.post-body -->
+
+  </div><!-- /.content -->
 
   <footer>
     <span>MOSTLY NOMINAL // HRW MAT-LAB</span>
     <div class="fc">
+      <span id="footer-ts">----·--·-- --:--Z</span>
       <span>SYS: <span style="color:var(--g-line)">NOM</span></span>
       <span class="pn">P.101</span>
     </div>
   </footer>
 
-</div>
+</div><!-- /.wrap -->
 
 <script>
+  const t0 = Date.now();
   function tick() {
     const n = new Date();
     const pad = v => String(v).padStart(2,'0');
-    const el = document.getElementById('clk');
-    if (el) el.textContent = pad(n.getUTCHours())+':'+pad(n.getUTCMinutes())+':'+pad(n.getUTCSeconds());
+    const hh = pad(n.getUTCHours());
+    const mm = pad(n.getUTCMinutes());
+    const ss = pad(n.getUTCSeconds());
+    const yr = n.getUTCFullYear();
+    const mo = pad(n.getUTCMonth() + 1);
+    const dy = pad(n.getUTCDate());
+    document.getElementById('clk').textContent = hh+':'+mm+':'+ss;
+    document.getElementById('datestamp').textContent = yr+'·'+mo+'·'+dy;
+    document.getElementById('footer-ts').textContent = yr+'·'+mo+'·'+dy+' '+hh+':'+mm+'Z';
+    const e = Math.floor((Date.now()-t0)/1000);
+    document.getElementById('met').textContent = 'T+'+pad(Math.floor(e/3600))+':'+pad(Math.floor((e%3600)/60))+':'+pad(e%60);
   }
-  tick();
-  setInterval(tick, 1000);
+  window.addEventListener('load', () => { tick(); setInterval(tick, 1000); });
 </script>
 </body>
 </html>
